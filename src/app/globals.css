@@ -24,8 +24,8 @@
     --text-xs: 9px;
     --text-s: 10px;
     --text-m: 12px;
-    --text-l: 16px;
-    --text-xl: 28px;
+    --text-l: 18px;
+    --text-xl: 26px;
 }
 
 @media (min-width: 768px) {
@@ -33,8 +33,8 @@
         --text-xs: 10px;
         --text-s: 12px;
         --text-m: 14px;
-        --text-l: 20px;
-        --text-xl: 36px;
+        --text-l: 24px;
+        --text-xl: 32px;
     }
 }
 
