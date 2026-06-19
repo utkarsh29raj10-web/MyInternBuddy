@@ -12,4 +12,5 @@ This is a ...
 - Project Development Plan
 - Setting up variables
 - Help with new version of Prisma
+- Design SVG for auth-modal in globasl.css
 - 
