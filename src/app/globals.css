@@ -17,8 +17,8 @@
 :root {
     --bg: #F1F5F9;
     --fg: #E2E8F0;
-    --primary: #1C75FF;
-    --secondary: #0F2857;
+    --primary: #00D37F;
+    --secondary: #AFFBCB;
     --red: #E53935;
 
     --text-xs: 9px;
@@ -41,8 +41,8 @@
 .dark {
     --bg: #0F2857;
     --fg: #1E3A8A;
-    --primary: #F1F5F9;
-    --secondary: #E2E8F0;
+    --primary: #00D37F;
+    --secondary: #AFFBCB;
     --red: #E53935;
 }
 

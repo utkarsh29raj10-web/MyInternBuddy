@@ -10,7 +10,7 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col items-center text-center max-w-2xl">
-              <h1 className="text-xl font-bold text-primary mb-4">
+              <h1 className="text-xl text-primary mb-4">
                   Welcome to {SITE_CONFIG.brandName}
               </h1>
 
