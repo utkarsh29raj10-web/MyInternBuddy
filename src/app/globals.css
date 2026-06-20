@@ -7,6 +7,10 @@
     --color-secondary: var(--secondary);
     --color-alert: var(--red);
 
+    --font-brand: var(--font-afacad);
+    --font-sans: var(--font-inter);
+    --font-subtitle: var(--font-darker-grotesque);
+
     --text-xs: var(--text-xs);
     --text-s: var(--text-s);
     --text-m: var(--text-m);
@@ -15,11 +19,15 @@
 }
 
 :root {
-    --bg: #F1F5F9;
-    --fg: #E2E8F0;
-    --primary: #00D37F;
-    --secondary: #AFFBCB;
-    --red: #E53935;
+    --font-afacad: "Afacad", sans-serif;
+    --font-inter: "Inter", sans-serif;
+    --font-darker-grotesque: "Darker Grotesque", sans-serif;
+
+    --bg: #FEF9EF;
+    --fg: #FDF0D5;
+    --primary: #003049;
+    --secondary: #00486D;
+    --red: #CA000F;
 
     --text-xs: 9px;
     --text-s: 10px;
@@ -39,16 +47,17 @@
 }
 
 .dark {
-    --bg: #0F2857;
-    --fg: #1E3A8A;
-    --primary: #00D37F;
-    --secondary: #AFFBCB;
-    --red: #E53935;
+    --bg: #003049;
+    --fg: #00486D;
+    --primary: #FDF0D5;
+    --secondary: #FEF9EF;
+    --red: #F42D3C;
 }
 
 body {
     background-color: var(--bg);
     color: var(--primary);
+    font-family: var(--font-sans), sans-serif;
 }
 
 .glass-panel {
