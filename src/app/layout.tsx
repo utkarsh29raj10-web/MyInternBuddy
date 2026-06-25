@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Afacad, Darker_Grotesque } from "next/font/google";
+import { Google_Sans, Afacad, Darker_Grotesque } from "next/font/google";
 import "./globals.css";
 import {SITE_CONFIG} from "@/constants/config";
 
@@ -8,9 +8,9 @@ const afacad = Afacad({
     variable: "--font-afacad",
 });
 
-const inter = Inter({
+const googleSans = Google_Sans({
     subsets: ["latin"],
-    variable: "--font-inter"
+    variable: "--font-google-sans"
 });
 
 const darkerGrotesque = Darker_Grotesque({
@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.variable} ${afacad.variable} ${darkerGrotesque.variable} antialiased`}>
+        <body className={`${googleSans.variable} ${afacad.variable} ${darkerGrotesque.variable} antialiased`}>
           {children}
         </body>
       </html>
