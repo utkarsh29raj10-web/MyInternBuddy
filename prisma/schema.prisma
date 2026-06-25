@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url = env("DATABASE_URL")
 }
 
 // Options to chooose from for a role
@@ -18,10 +19,13 @@ model User {
   id String @id @default(cuid())
   email String @unique
   name String
-  dateofBirth DateTime
+  dateofBirth DateTime?
   hashedPassword String?
   role Role @default(EXPLORER)
   skills String[]
+
+  resetToken String?
+  resetTokenExpiry DateTime?
 
   college String?
   resumeLink String?
