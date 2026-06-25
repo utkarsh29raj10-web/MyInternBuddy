@@ -10,7 +10,7 @@ export default function LoginButton() {
         <>
             <button
                 onClick={() => setIsModalOpen(true)}
-                className="px-6 py-3 bg-primary text-background font-bold rounded-md hover:opacity-90 transition-opacity shadow-md"
+                className="px-6 py-3 bg-primary text-background font-medium font-sans text-m rounded-md hover:opacity-90 transition-opacity shadow-md"
             >
                 Login/Register
             </button>
