@@ -21,10 +21,12 @@ model User {
   dateofBirth DateTime?
   hashedPassword String?
   role Role @default(EXPLORER)
-  skills String[]
+  skills String[] @default([])
 
   accounts Account[]
   sessions Session[]
+  emailVerified DateTime?
+  image String?
 
   resetToken String?
   resetTokenExpiry DateTime?
