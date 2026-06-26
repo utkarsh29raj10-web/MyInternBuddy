@@ -1,15 +1,13 @@
 import {NextResponse} from "next/server";
-import {PrismaClient} from "@prisma/client";
 import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
+import {prisma} from "@/lib/prisma";
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const {email, password, name, dateOfBirth, role} = body;
+        const {email, password, name, dateofBirth, role} = body;
 
-        if (!email || !password || !name || !dateOfBirth || !role) {
+        if (!email || !password || !name || !dateofBirth || !role) {
             return NextResponse.json(
                 {error: "Please enter all the details."},
                 {status: 400}
@@ -30,7 +28,7 @@ export async function POST(req: Request) {
             data: {
                 email,
                 name,
-                dateofBirth: new Date(dateOfBirth),
+                dateofBirth: new Date(dateofBirth),
                 role,
                 hashedPassword,
             },
