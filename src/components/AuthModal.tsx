@@ -3,7 +3,7 @@
 import {useState, useEffect} from "react";
 import {signIn} from "next-auth/react";
 import {SITE_CONFIG} from "@/constants/config";
-import {X, Mail, ArrowLeft} from "lucide-react";
+import {X, Mail, ArrowLeft, Calendar, ChevronDown} from "lucide-react";
 
 export default function AuthModal({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) {
     const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ export default function AuthModal({isOpen, onClose}: {isOpen: boolean, onClose: 
 
     const [name, setName] = useState("");
     const [dob, setDob] = useState("");
-    const [role, setRole] = useState("EXPLORER");
+    const [role, setRole] = useState("");
 
     useEffect(() => {
         if (!isOpen) {
@@ -125,7 +125,8 @@ export default function AuthModal({isOpen, onClose}: {isOpen: boolean, onClose: 
                  WebkitMaskImage: 'radial-gradient(circle 350px at center, black 75%, transparent 100%)'}}
              />
 
-            <div className="glass-panel auth-modal-pattern p-8 pt-14 rounded-xl flex flex-col items-center max-w-md w-full text-center relative overflow-hidden z-10"
+            {/* Removed auth-modal-pattern */}
+            <div className="glass-panel  p-8 pt-14 rounded-xl flex flex-col items-center max-w-md w-full text-center relative overflow-hidden z-10"
                  onClick={(e) => e.stopPropagation()}>
 
                 <button onClick={onClose}
@@ -148,21 +149,30 @@ export default function AuthModal({isOpen, onClose}: {isOpen: boolean, onClose: 
                     </button>
                 )}
 
-                <div className="flex items-center justify-center gap-3 mb-0">
-                    <img src="/icon-light.svg" alt="Logo"
-                         className="w-8 h-8 light-icon"
-                    />
-                    <img src="/icon-white.svg" alt="Logo"
-                         className="w-8 h-8 dark-icon"
-                    />
+                {!isRegistering ? (
+                    <div className="flex items-center justify-center gap-3 mb-0">
+                        <img src="/icon-light.svg" alt="Logo"
+                             className="w-8 h-8 light-icon"
+                        />
+                        <img src="/icon-white.svg" alt="Logo"
+                             className="w-8 h-8 dark-icon"
+                        />
 
-                    <h2 className="font-brand text-xl font-bold text-primary">
-                        {SITE_CONFIG.brandName}
-                    </h2>
-                </div>
+                        <h2 className="font-brand text-xl font-bold text-primary">
+                            {SITE_CONFIG.brandName}
+                        </h2>
+                    </div>
+                    ) : (
+                    <h1 className="font-brand text-2xl font-bold text-primary mb-2">Almost there!</h1>
+                )}
 
                 <p className="font-sans text-m text-secondary mb-6 opacity-80">
-                    {isForgotPassword ? "Reset Your Password Securely." : "Unlock Your True Career Potential Today."}
+                    {isForgotPassword
+                        ? "Reset Your Password Securely."
+                        : isRegistering
+                            ? "We just need a few more details to complete your profile."
+                            : "Unlock Your True Career Potential Today."
+                    }
                 </p>
 
                 { errorMsg &&
@@ -233,9 +243,11 @@ export default function AuthModal({isOpen, onClose}: {isOpen: boolean, onClose: 
                 ) : (
                     <form onSubmit={handleRegsitrationSubmit}
                           className="w-full flex flex-col gap-3 font-sans animate-fade-in">
-                        <p className="text-s text-secondary text-left font-bold opacity-70 uppercase tracking-wider mb-1">
-                            Complete Your Profile
+
+                        <p className="text-s text-secondary text-left font-bold opacity-70 uppercase tracking-wider mt-2 mb-1">
+                            People call me
                         </p>
+
                         <input
                             type="text"
                             placeholder="Enter Full Name"
@@ -244,25 +256,42 @@ export default function AuthModal({isOpen, onClose}: {isOpen: boolean, onClose: 
                             required
                             className="w-full p-3 bg-background text-primary border border-secondary border-opacity-10 rounded-md outline-none focus:border-opacity-50 transition-colors"
                         />
-                        <input
-                            type="date"
-                            value={dob}
-                            onChange={(e) => setDob(e.target.value)}
-                            required
-                            className="w-full p-3 bg-background text-secondary border border-secondary border-opacity-10 rounded-md outline-none focus:border-opacity-50 transition-colors"
-                        />
-                        <select
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                            className="w-full p-3 bg-background text-primary border border-secondary border-opacity-10 rounded-md outline-none focus:border-opacity-50 transition-colors"
-                        >
-                            <option value="EXPLORER">Explorer</option>
-                            <option value="STUDENT">Student</option>
-                            <option value="RECRUITER">Recruiter</option>
-                        </select>
 
+                        <p className="text-s text-secondary text-left font-bold opacity-70 uppercase tracking-wider mb-1">
+                            Date of Birth
+                        </p>
+
+                        <div className="relative w-full">
+                            <input
+                                type="date"
+                                value={dob}
+                                onChange={(e) => setDob(e.target.value)}
+                                required
+                                className={`appearance-none w-full p-3 min-h-[50px] pr-10 bg-background border border-secondary border-opacity-10 rounded-md outline-none focus:border-opacity-50 transition-colors [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-datetime-edit]:text-primary ${!dob ? "text-secondary opacity-60" : "text-primary"}`}
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none opacity-70"/>
+                        </div>
+
+                        <p className="text-s text-secondary text-left font-bold opacity-70 uppercase tracking-wider mt-2 mb-1">
+                            I am a...
+                        </p>
+
+                        <div className="relative w-full">
+                            <select
+                                value={role}
+                                onChange={(e) => setRole(e.target.value)}
+                                className={`appearance-none w-full p-3 min-h-[50px] pr-10 bg-background border border-secondary border-opacity-10 rounded-md outline-none focus:border-opacity-50 transition-colors ${!role ? "text-secondary opacity-60" : "text-primary"}`}
+                            >
+                                <option value="" disabled hidden>Role</option>
+                                <option value="EXPLORER">Explorer (Just browsing)</option>
+                                <option value="STUDENT">Student (Looking for opportunities)</option>
+                                <option value="RECRUITER">Recruiter (Hiring Talent)</option>
+                            </select>
+
+                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none opacity-70"/>
+                        </div>
                         <button type="submit"
-                                className="w-full p-3 mt-2 bg-alert text-backgorund font-bold rounded-md hover:opacity-80 active:scale-[0.98] active:opacity-60 transition-all">
+                                className="w-full p-3 mt-2 bg-primary text-background font-medium rounded-md hover:opacity-80 active:scale-[0.98] active:opacity-60 transition-all">
                             Create Account
                         </button>
                     </form>
