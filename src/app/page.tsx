@@ -19,22 +19,29 @@ export default async function Home() {
     }
 
     return (
-      <main className="min-h-screen p-8 flex flex-col items-center justify-center relative">
-          <div className="absolute top-4 right-6">
-            <ThemeToggle />
-          </div>
+        <main className="min-h-screen p-8 flex flex-col items-center justify-center relative">
+            <div className="absolute top-4 right-6">
+                <ThemeToggle />
+            </div>
 
-          <div className="flex flex-col items-center text-center max-w-2xl">
-              <h1 className="text-xl text-primary font-light font-brand">
-                  Welcome to {SITE_CONFIG.brandName}
-              </h1>
+            <div className="flex flex-col items-center text-center max-w-2xl">
+                <h1 className="text-xl text-primary font-light font-brand">
+                    Welcome to {SITE_CONFIG.brandName}
+                </h1>
 
-              <p className="text-l font-medium text-secondary font-subtitle mb-4 opacity-80">
-                  From Campus to Career, Your Journey Starts With Us!
-              </p>
+                <p className="text-l font-medium text-secondary font-subtitle mb-4 opacity-80">
+                    From Campus to Career, Your Journey Starts With Us!
+                </p>
 
-              <LoginButton />
-          </div>
-      </main>
-  );
+                {session ? (
+                    <div className="mt-4 p-6 glass-panel rounded-xl flex flex-col items-center gap-3 animate-fade-in border border-primary border-opacity-10">
+                        <p className="font-sans text-primary font-bold text-m">You are securely logged in!</p>
+                        <p className="font-sans text-secondary opacity-80 text-s">Your Dashboard is under construction.</p>
+                    </div>
+                ) : (
+                    <LoginButton />
+                )}
+            </div>
+        </main>
+    );
 }

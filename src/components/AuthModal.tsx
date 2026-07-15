@@ -107,7 +107,14 @@ export default function AuthModal({isOpen, onClose}: {isOpen: boolean, onClose: 
                 body: JSON.stringify({email}),
             });
 
-            setSuccessMsg("We have sent a reset link to your email.");
+            const data = await res.json();
+
+            if (!res.ok) {
+                setErrorMsg(data.error || "Failed to send reset link.");
+                return;
+            }
+
+            setSuccessMsg(data.message || "We have sent a reset link to your email.");
         }
         catch (err) {
             setErrorMsg("Something went wrong. Please try again.");
