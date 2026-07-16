@@ -31,6 +31,13 @@ export function GlobalButton({
             className={`${baseStyles} ${variants[variant]} ${widthStyle} ${className}`}
             {...props}
         >
+            {icon
+                && <span
+                    className="flex items-center justify-center"
+                >
+                    {icon}
+                </span>
+            }
             {children}
         </button>
     )
