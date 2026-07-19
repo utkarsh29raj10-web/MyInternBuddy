@@ -7,9 +7,9 @@
     --color-secondary: var(--secondary);
     --color-alert: var(--red);
 
-    --font-brand: var(--font-afacad);
+    --font-brand: var(--font-manrope);
     --font-sans: var(--font-google-sans);
-    --font-subtitle: var(--font-darker-grotesque);
+    --font-subtitle: var(--font-google-sans);
 
     --text-xs: var(--text-xs);
     --text-s: var(--text-s);
@@ -19,9 +19,9 @@
 }
 
 :root {
-    --font-afacad: "Afacad", sans-serif;
+    --font-manrope: "Manrope", "sans-serif";
     --font-google-sans: "Google Sans", google-sans, "sans-serif";
-    --font-darker-grotesque: "Darker Grotesque", sans-serif;
+    /*--font-darker-grotesque: "Darker Grotesque", sans-serif;*/
 
     --bg: #FFFFFF;
     --fg: #FEF9EF;
@@ -61,16 +61,19 @@ body {
 }
 
 .glass-panel {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(64px);
+    -webkit-backdrop-filter: blur(64px);
     border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
 }
 
 .dark .glass-panel {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 72, 109, 0.8);
+    backdrop-filter: blur(64px);
+    -webkit-backdrop-filter: blur(64px);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
 }
 
 .auth-modal-pattern {
