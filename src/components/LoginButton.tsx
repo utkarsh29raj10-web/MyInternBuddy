@@ -3,16 +3,20 @@
 import {useState} from "react";
 import AuthModal from "@/components/AuthModal";
 
-export default function LoginButton() {
+interface LoginButtonProps {
+    className?: string;
+}
+
+export default function LoginButton({ className }: LoginButtonProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <>
             <button
                 onClick={() => setIsModalOpen(true)}
-                className="px-6 py-3 bg-primary text-background font-medium font-sans text-m rounded-md hover:opacity-90 transition-opacity shadow-md"
+                className={`px-6 py-3 bg-primary rounded-full text-background font-medium font-sans text-m hover:opacity-80 active:opacity-60 transition-opacity shadow-md ${className || ""}`}
             >
-                Login/Register
+                Get Started
             </button>
 
             <AuthModal
