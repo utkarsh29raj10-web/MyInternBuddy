@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Google_Sans, Afacad, Darker_Grotesque } from "next/font/google";
+import { Google_Sans, Manrope, Darker_Grotesque } from "next/font/google";
 import "./globals.css";
 import {SITE_CONFIG} from "@/constants/config";
 import {Providers} from "@/components/Providers";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
-const afacad = Afacad({
+const manrope = Manrope({
     subsets: ["latin"],
-    variable: "--font-afacad",
+    variable: "--font-manrope",
 });
 
 const googleSans = Google_Sans({
@@ -14,10 +16,10 @@ const googleSans = Google_Sans({
     variable: "--font-google-sans"
 });
 
-const darkerGrotesque = Darker_Grotesque({
-    subsets: ["latin"],
-    variable: "--font-darker-grotesque",
-});
+// const darkerGrotesque = Darker_Grotesque({
+//     subsets: ["latin"],
+//     variable: "--font-darker-grotesque",
+// });
 
 export const metadata: Metadata = {
     title: SITE_CONFIG.brandName,
@@ -30,7 +32,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={`${googleSans.variable} ${afacad.variable} ${darkerGrotesque.variable} antialiased`}>
+            <body className={`${googleSans.variable} ${manrope.variable} ${googleSans.variable} antialiased`}>
                 <script
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -48,7 +50,15 @@ export default function RootLayout({
                         `,
                     }}
                 />
-                <Providers>{children}</Providers>
+                <Providers>
+                    <div className="flex flex-col min-h-screen">
+                        <Navbar/>
+                        <main className="flex-grow pt-28">
+                            {children}
+                        </main>
+                        <Footer/>
+                    </div>
+                </Providers>
             </body>
         </html>
     );

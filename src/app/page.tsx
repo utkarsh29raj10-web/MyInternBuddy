@@ -1,4 +1,3 @@
-import ThemeToggle from "@/components/ThemeToggle";
 import {SITE_CONFIG} from "@/constants/config";
 import LoginButton from "@/components/LoginButton";
 import {getServerSession} from "next-auth/next";
@@ -20,10 +19,6 @@ export default async function Home() {
 
     return (
         <main className="min-h-screen p-8 flex flex-col items-center justify-center relative">
-            <div className="absolute top-4 right-6">
-                <ThemeToggle />
-            </div>
-
             <div className="flex flex-col items-center text-center max-w-2xl">
                 <h1 className="text-xl text-primary font-light font-brand">
                     Welcome to {SITE_CONFIG.brandName}
