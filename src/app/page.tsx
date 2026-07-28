@@ -1,42 +1,18 @@
-import {SITE_CONFIG} from "@/constants/config";
-import LoginButton from "@/components/LoginButton";
-import {getServerSession} from "next-auth/next";
 import {authOptions} from "@/lib/auth";
-import {prisma} from "@/lib/prisma";
-import {redirect} from "next/navigation";
+import {getServerSession} from "next-auth";
+import LandingPage from "@/components/home/LandingPage";
+import StudentHome from "@/components/home/StudentHome";
+import RecruiterHome from "@/components/home/RecruiterHome";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
+    const role = session?.user?.role;
 
-    if(session?.user?.email) {
-        const dbUser = await prisma.user.findUnique({
-            where: {email: session.user.email}
-        });
+    if(!session)
+        return <LandingPage />;
 
-        if (dbUser && !dbUser.dateofBirth)
-            redirect("/onboarding");
-    }
+    if (role === "RECRUITER")
+        return <RecruiterHome />;
 
-    return (
-        <main className="min-h-screen p-8 flex flex-col items-center justify-center relative">
-            <div className="flex flex-col items-center text-center max-w-2xl">
-                <h1 className="text-xl text-primary font-light font-brand">
-                    Welcome to {SITE_CONFIG.brandName}
-                </h1>
-
-                <p className="text-l font-medium text-secondary font-subtitle mb-4 opacity-80">
-                    From Campus to Career, Your Journey Starts With Us!
-                </p>
-
-                {session ? (
-                    <div className="mt-4 p-6 glass-panel rounded-xl flex flex-col items-center gap-3 animate-fade-in border border-primary border-opacity-10">
-                        <p className="font-sans text-primary font-bold text-m">You are securely logged in!</p>
-                        <p className="font-sans text-secondary opacity-80 text-s">Your Dashboard is under construction.</p>
-                    </div>
-                ) : (
-                    <LoginButton />
-                )}
-            </div>
-        </main>
-    );
+    return <StudentHome/>
 }
