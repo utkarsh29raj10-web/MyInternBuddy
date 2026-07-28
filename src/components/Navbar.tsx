@@ -15,8 +15,7 @@ export default function Navbar() {
     return (
         <div className="fixed top-6 w-full flex justify-center z-40 pointer-events-none">
             <header className="relative w-[95%] max-w-5xl h-16 pointer-events-auto">
-                <div className="absolute inset-0 rounded-full glass-panel bg-background bg-opacity-60 border border-secondary border-opacity-10 shadow-lg pointer-events-none -z-10"></div>
-
+                <div className="absolute inset-0 rounded-full bg-background/80 backdrop-blur-md border border-secondary/20 shadow-lg pointer-events-none"></div>
                 <nav className="relative w-full h-full px-6 flex items-center justify-between z-10">
                     <div className="px-8">
                         <Link href="/"
@@ -33,7 +32,7 @@ export default function Navbar() {
 
                     <div className="flex-1 flex justify-center gap-5 sm:gap-8 font-sans font-bold opacity-80 text-s">
                         {session && (
-                            <Link href="/dashboard"
+                            <Link href="/"
                                   className="flex items-center gap-1.5 text-secondary hover:text-primary transition-colors"
                             >
                                 <LayoutDashboard className="w-4 h-4"/>
