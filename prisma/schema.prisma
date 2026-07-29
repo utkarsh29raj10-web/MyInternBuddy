@@ -40,6 +40,8 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  savedInternships SavedInternship[]
 }
 
 model Account {
@@ -75,4 +77,33 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Internship {
+  id             String            @id
+  title          String
+  company        String
+  description    String            @db.Text
+  location       String
+  stipend        String?
+  durtion        String?
+  startDate      DateTime?
+  skills         String[]
+  applyLink      String            @db.Text
+  sourcePlatform String?
+  postedAt       DateTime?
+  fetchedAt      DateTime
+  createdAt      DateTime          @default(now())
+  savedBy        SavedInternship[]
+}
+
+model SavedInternship {
+  id           String     @id @default(cuid())
+  userId       String
+  internshipId String
+  savedAt      DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  internship   Internship @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, internshipId])
 }
