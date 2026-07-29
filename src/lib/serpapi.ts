@@ -67,13 +67,23 @@ export async function fetchAndCacheGoogleJobs(query: string, location?: string) 
         api_key: apiKey,
     });
 
-    if (location) searchParams.append("location", location);
+    if (location) {
+        if (location.toLowerCase() === "remote") {
+            searchParams.append("q", `${query} internship remote`);
+        }
+        else {
+            searchParams.append("location", location);
+        }
+    }
 
     try {
-        const response = await fetch(`https://serpapi.com/search.json? ${searchParams.toString()}`);
+        const response = await fetch(`https://serpapi.com/search.json?${searchParams.toString()}`);
         const data = await response.json();
 
-        if (!data.jobs_results) return[];
+        if (!data.jobs_results) {
+            console.error("SerpAPI returned no jobs", data);
+            return[];
+        }
 
         const normalizedJobs = data.jobs_results.map((job: SerpApiJob) => {
             const {stipend, duration, postedAt} = parseExtensions(job.extensions);

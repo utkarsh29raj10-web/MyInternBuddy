@@ -86,7 +86,7 @@ model Internship {
   description    String            @db.Text
   location       String
   stipend        String?
-  durtion        String?
+  duration       String?
   startDate      DateTime?
   skills         String[]
   applyLink      String            @db.Text
