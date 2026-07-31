@@ -21,7 +21,8 @@ export default function StudentHome() {
                 </div>
 
                 <div className="w-full md:w-1/2 flex justify-center md:justify-end z-10">
-                    <div className="w-full max-w-md glass-panel p-6 rounded-2xl flex flex-col gap-4 shadow-xl border border-secondary/10">
+                    {/*change here*/}
+                    <form action="/internships" method="GET" className="w-full max-w-md glass-panel p-6 rounded-2xl flex flex-col gap-4 shadow-xl border border-secondary/10">
                         <h2 className="font-sans font-semibold text-primary text-m mb-2">
                             Quick Search
                         </h2>
@@ -47,7 +48,8 @@ export default function StudentHome() {
                         <button className="w-full h-12 mt-2 bg-primary text-background font-medium font-sans text-m rounded-xl hover:opacity-80 active:opacity-60 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
                             Search Internships
                         </button>
-                    </div>
+                    {/*change here*/}
+                    </form>
                 </div>
             </section>
 
