@@ -7,7 +7,7 @@ export default function StudentProfile() {
 
     return (
         <div className="w-full flex flex-col gap-8">
-            <div className="w-full flex items-center justify-start gap-2 bg-background/40 backdrop-blur-2xl border border-white/10 p-2 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-x-auto">
+            <div className="w-full pl-4 flex items-center justify-start gap-2 bg-background/40 backdrop-blur-2xl border border-white/10 p-2 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-x-auto">
                 <button
                     onClick={() => setActiveTab("details")}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-brand font-bold text-sm transition-all duration-300 

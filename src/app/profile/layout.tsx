@@ -8,7 +8,7 @@ export default async function ProfileLayout({children}: {children: React.ReactNo
     if (!session) redirect("/");
 
     return (
-        <div className="min-h-screen w-full bg-background pt-24 pb-12 px-4 sm:px-6">
+        <div className="min-h-screen w-full bg-background pt-4 pb-12 px-4 sm:px-6">
             <div className="max-w-6xl mx-auto flex flex-col gap-8 animate-fade-in">
                 {children}
             </div>
