@@ -1,3 +1,5 @@
+// fixed infinite scroll using AI
+
 import {prisma} from "@/lib/prisma";
 import crypto from "crypto";
 
@@ -44,7 +46,6 @@ function parseExtensions(extensions: string[] = []) {
         ) {
             duration = ext;
         }
-
         else if (lowerExt.includes("ago")) {
             postedAt = new Date();
         }
@@ -53,72 +54,100 @@ function parseExtensions(extensions: string[] = []) {
     return {stipend, duration, postedAt};
 }
 
-export async function fetchAndCacheGoogleJobs(query: string, location?: string) {
+export async function fetchAndCacheGoogleJobs(query: string, location?: string, pageToken?: string) {
     const apiKey = process.env.SERPAPI_KEY;
+    if (!apiKey) return { jobs: [], nextPageToken: null };
 
-    if (!apiKey) {
-        console.error("Missing Serp API Key");
-        return [];
+    const finalQuery = query.toLowerCase().includes("intern") ? query : `${query} internship`;
+
+    const isRemote = location?.toLowerCase().includes("remote");
+    const locationParam = isRemote ? "" : (location ? `&location=${encodeURIComponent(location)}` : "");
+    const ltypeParam = isRemote ? "&ltype=1" : "";
+
+    let currentUrl: string | null = pageToken
+        ? `${pageToken}&api_key=${apiKey}`
+        : `https://serpapi.com/search.json?engine=google_jobs&q=${encodeURIComponent(finalQuery)}&api_key=${apiKey}${locationParam}${ltypeParam}`;
+
+    let allNormalizedJobs: any[] = [];
+    let lastNextToken: string | null = null;
+
+    for (let i = 0; i < 5; i++) {
+        if (!currentUrl) break;
+
+        try {
+            const res: Response = await fetch(currentUrl);
+            const apiData: any = await res.json();
+
+            if (!apiData.jobs_results || apiData.jobs_results.length === 0) break;
+
+            const normalizedJobs = apiData.jobs_results.map((job: any) => {
+                const {stipend, duration, postedAt} = parseExtensions(job.extensions);
+
+                let applyLink = "#";
+                let sourcePlatform = job.via ? job.via.replace("via ", "") : "Google Jobs";
+
+                if (job.apply_options && job.apply_options.length > 0) {
+                    applyLink = job.apply_options[0].link;
+                    sourcePlatform = job.apply_options[0].title.replace("Apply on ", "");
+                } else if (job.related_links && job.related_links.length > 0) {
+                    applyLink = job.related_links[0].link;
+                } else if (job.share_link) {
+                    applyLink = job.share_link;
+                }
+
+                return {
+                    id: job.job_id || generateJobId(job.title, job.company_name, job.location),
+                    title: job.title,
+                    company: job.company_name,
+                    description: job.description,
+                    location: job.location,
+                    stipend,
+                    duration,
+                    startDate: null,
+                    skills: [],
+                    applyLink,
+                    sourcePlatform,
+                    postedAt: postedAt,
+                    fetchedAt: new Date(),
+                };
+            });
+
+            allNormalizedJobs.push(...normalizedJobs);
+
+            if (apiData.serpapi_pagination && apiData.serpapi_pagination.next) {
+                currentUrl = `${apiData.serpapi_pagination.next}&api_key=${apiKey}`;
+                lastNextToken = apiData.serpapi_pagination.next;
+            } else {
+                currentUrl = null;
+                lastNextToken = null;
+            }
+        } catch (error) {
+            console.error(`Failed to fetch from SerpAPI on page ${i+1}:`, error);
+            break;
+        }
     }
 
-    const searchParams = new URLSearchParams({
-        engine: "google_jobs",
-        q: `${query} internship`,
-        api_key: apiKey,
-    });
+    if (allNormalizedJobs.length === 0) return { jobs: [], nextPageToken: null };
 
-    if (location) {
-        if (location.toLowerCase() === "remote") {
-            searchParams.append("q", `${query} internship remote`);
-        }
-        else {
-            searchParams.append("location", location);
-        }
-    }
+    const uniqueJobsMap = new Map();
+    allNormalizedJobs.forEach(job => uniqueJobsMap.set(job.id, job));
+    const uniqueJobsToSave = Array.from(uniqueJobsMap.values());
 
     try {
-        const response = await fetch(`https://serpapi.com/search.json?${searchParams.toString()}`);
-        const data = await response.json();
-
-        if (!data.jobs_results) {
-            console.error("SerpAPI returned no jobs", data);
-            return[];
-        }
-
-        const normalizedJobs = data.jobs_results.map((job: SerpApiJob) => {
-            const {stipend, duration, postedAt} = parseExtensions(job.extensions);
-            const applyLink = job.related_links && job.related_links.length > 0 ? job.related_links[0].link : "#";
-
-            return {
-                id: job.job_id || generateJobId(job.title, job.company_name, job.location),
-                title: job.title,
-                company: job.company_name,
-                description: job.description,
-                location: job.location,
-                stipend,
-                duration,
-                startDate: null,
-                skills: [],
-                applyLink,
-                sourcePlatform: job.related_links ? job.related_links[0].text : "Google Jobs",
-                postedAt: postedAt,
-                fetchedAt: new Date(),
-            };
-        });
-
-        const upsertPromises = normalizedJobs.map((job: any) => prisma.internship.upsert({
-            where: {id: job.id},
-            update: {
-                fetchedAt: new Date(),
-            },
-            create: job
-        }));
-
-        await prisma.$transaction(upsertPromises);
-        return normalizedJobs;
+        const upsertPromises = uniqueJobsToSave.map((job: any) =>
+            prisma.internship.upsert({
+                where: { id: job.id },
+                update: { fetchedAt: new Date() },
+                create: job
+            })
+        );
+        await Promise.all(upsertPromises);
+    } catch (dbError) {
+        console.error("[SERPAPI] Database upsert failed:", dbError);
     }
-    catch (error) {
-        console.error("Failed to fetch from SerpAPI:", error);
-        return [];
-    }
+
+    return {
+        jobs: uniqueJobsToSave,
+        nextPageToken: lastNextToken
+    };
 }
