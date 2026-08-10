@@ -69,7 +69,7 @@ export default function ProfileDetailsForm() {
     }
 
     return (
-        <div className="w-full flex flex-col gap-6 animate-fade-in bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8">
+        <div className="w-full flex flex-col gap-6 animate-fade-in bg-secondary/5 border border-secondary/10 rounded-2xl p-6 md:p-8">
             <h3 className="text-xl font-brand font-bold text-secondary mb-2">
                 Personal Details
             </h3>
@@ -85,7 +85,7 @@ export default function ProfileDetailsForm() {
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full bg-background/50 border border-white/10 px-4 rounded-xl text-secondary focus:oultine-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
+                        className="w-full bg-background/50 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
                         placeholder="John Doe"
                     />
                 </div>
@@ -101,7 +101,7 @@ export default function ProfileDetailsForm() {
                         type="text"
                         value={college}
                         onChange={(e) => setCollege(e.target.value)}
-                        className="w-full bg-background/50 border border-white/10 px-6 rounded-md text-secondary focus:oultine-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
+                        className="w-full bg-background/50 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
                         placeholder="Hogwarts University"
                     />
                 </div>
@@ -113,32 +113,28 @@ export default function ProfileDetailsForm() {
                     Skills (Press Enter to add)
                 </label>
 
-                <div className="w-full bg-background/50 border border-white/10 rounded-xl flex flex-wrap gap-2 transition-all duration-300">
-                    {skills.map(skill => (
-                        <div
-                            key={skill}
-                            className="flex items-center gap-1 bg-primary/20 border border-primary/30 text-primary px-3 py-1 rounded-full text-sm font-bold animate-fade-in"
-                        >
-                            {skill}
-                            <button
-                                onClick={() => removeSkill(skill)}
-                                className="hover:text-white transition-colors"
-                            >
-                                <X className="w-3 h-3"/>
-                            </button>
-                        </div>
-                    ))}
-
-                    <input
-                        id="skills"
-                        type="text"
-                        value={skillInput}
-                        onChange={(e) => setSkillInput(e.target.value)}
-                        onKeyDown={addSkill}
-                        className="flex-grow bg-transparent border-none outline-none text-secondary min-w-[120px] placeholder:text-secondary/30 px-2"
-                        placeholder="e.g., React, Python, Advertising"
-                    />
-                </div>
+                <input
+                    id="skills"
+                    type="text"
+                    value={skillInput}
+                    onChange={(e) => setSkillInput(e.target.value)}
+                    onKeyDown={addSkill}
+                    className="w-full bg-background/50 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
+                    placeholder="e.g., React, Python, C++, Prompt Engineering"
+                />
+                {skills.length > 0 && (
+                    <div className="w-full flex flex-wrap gap-2 mt-2">
+                        {skills.map(skill => (
+                            <div key={skill} className="flex items-center gap-1 bg-primary/10 border border-primary/20 text-primary px-3 py-1.5 rounded-full text-sm font-bold animate-fade-in">
+                                {skill}
+                                <button onClick={() => removeSkill(skill)}
+                                        className="hover:text-red-400 transition-colors">
+                                    <X className="w-3 h-3"/>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
 
             <div className="w-full flex items-center justify-end gap-4 mt-2">

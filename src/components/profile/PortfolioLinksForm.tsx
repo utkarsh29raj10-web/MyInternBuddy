@@ -56,7 +56,7 @@ export default function PortfolioLinksForm() {
     }
 
     return (
-        <div className="w-full flex flex-col gap-6 animate-fade-in bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 mt-6">
+        <div className="w-full flex flex-col gap-6 animate-fade-in bg-secondary/5 border border-secondary/10 rounded-2xl p-6 md:p-8 mt-6">
             <h3 className="text-xl font-brand font-bold text-secondary mb-2">
                 Portfolio & Links
             </h3>
@@ -73,7 +73,7 @@ export default function PortfolioLinksForm() {
                         type="url"
                         value={resumeUrl}
                         onChange={(e) => setResumeUrl(e.target.value)}
-                        className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
+                        className="w-full bg-background/50 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
                         placeholder="https://...."
                     />
                 </div>
@@ -89,7 +89,7 @@ export default function PortfolioLinksForm() {
                         type="url"
                         value={githubUrl}
                         onChange={(e) => setGithubUrl(e.target.value)}
-                        className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
+                        className="w-full bg-background/50 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
                         placeholder="https://github.com/..."
                     />
                 </div>
@@ -105,7 +105,7 @@ export default function PortfolioLinksForm() {
                         type="url"
                         value={linkedinUrl}
                         onChange={(e) => setLinkedinUrl(e.target.value)}
-                        className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
+                        className="w-full bg-background/50 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 placeholder:text-secondary/30"
                         placeholder="https://linkedin.com/in/..."
                     />
                 </div>
@@ -119,7 +119,7 @@ export default function PortfolioLinksForm() {
                         type="url"
                         value={portfolioUrl}
                         onChange={(e) => setPortfolioUrl(e.target.value)}
-                        className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-secondary focus:outline-none foucs:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 palceholder:text-secondary/30"
+                        className="w-full bg-background/50 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none foucs:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 palceholder:text-secondary/30"
                         placeholder="https://..."
                     />
                 </div>
