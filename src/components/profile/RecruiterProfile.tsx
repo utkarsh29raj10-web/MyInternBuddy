@@ -3,6 +3,7 @@
 import {useState} from "react";
 import {Building2, Briefcase, Users} from "lucide-react";
 import CompanyProfileForm from "./CompanyProfileForm";
+import RecruiterInternshipForm from "./RecruiterInternshipForm";
 
 export default function RecruiterProfile() {
     const [activeTab, setActiveTab] = useState<"company" | "listings" | "applicants">("company");
@@ -26,9 +27,9 @@ export default function RecruiterProfile() {
                     onClick={() => setActiveTab("listings")}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-brand font-bold text-sm transition-all duration-300 
                         ${activeTab === "listings"
-                        ? "bg-primary text-background shadow-[0_0_15px_rgba(255,255,255,0.5)] scale-105"
-                        : "text-secondary/60 hover:text-primary hover:bg-white/5"
-                    }
+                            ? "bg-primary text-background shadow-[0_0_15px_rgba(255,255,255,0.5)] scale-105"
+                            : "text-secondary/60 hover:text-primary hover:bg-white/5"
+                        }
                     `}
                 >
                     <Building2 className="w-4 h-4"/>
@@ -57,9 +58,9 @@ export default function RecruiterProfile() {
                 )}
 
                 {activeTab === "listings" &&
-                    <h2 className="text-2xl font-brand font-bold text-primary opacity-50">
-                        Active Postings
-                    </h2>
+                    <div className="w-full flex flex-col items-start justify-start animate-fade-in">
+                        <RecruiterInternshipForm/>
+                    </div>
                 }
                 {activeTab === "applicants" &&
                     <h2 className="text-2xl font-brand font-bold text-primary opacity-50">
