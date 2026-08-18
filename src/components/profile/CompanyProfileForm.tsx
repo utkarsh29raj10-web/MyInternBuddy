@@ -66,7 +66,7 @@ export default function CompanyProfileForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2 md:col-span-1">
                     <label htmlFor="companyName"
-                           className="text-sm font-brand font-bold text-secondary/7- flex items-center gap-2 cursor-pointer">
+                           className="text-sm font-brand font-bold text-secondary/70 flex items-center gap-2 cursor-pointer">
                         <Building2 className="w-4 h-4"/> Company Name *
                     </label>
 
