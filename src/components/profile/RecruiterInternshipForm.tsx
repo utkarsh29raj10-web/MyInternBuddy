@@ -2,16 +2,16 @@
 import {useState} from "react";
 import {Briefcase, MapPin, Banknote, Clock, FileText, Tags, Loader2, ArrowRight, ArrowLeft, CheckCircle, X} from "lucide-react";
 
-export default function RecruiterInternshipForm({onSuccess}: {onSuccess?: () => void}) {
+export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuccess?: () => void, initialData?: any}) {
     const [step, setStep] = useState(1);
 
-    const [title, setTitle] = useState("");
-    const [location, setLocation] = useState("");
-    const [stipend, setStipend] = useState("");
-    const [duration, setDuration] = useState("");
-    const [description, setDescription] = useState("");
+    const [title, setTitle] = useState(initialData?.title ||"");
+    const [location, setLocation] = useState(initialData?.location ||"");
+    const [stipend, setStipend] = useState(initialData?.stipend || "");
+    const [duration, setDuration] = useState(initialData?.duration || "");
+    const [description, setDescription] = useState(initialData?.description || "");
 
-    const [skills, setSkills] = useState<string[]>([]);
+    const [skills, setSkills] = useState<string[]>(initialData?.skills || []);
     const [skillInput, setSkillInput] = useState("");
 
     const [loading, setLoading] = useState(false);
@@ -43,8 +43,14 @@ export default function RecruiterInternshipForm({onSuccess}: {onSuccess?: () => 
         setError("");
 
         try {
-            const res = await fetch("/api/internships/native", {
-                method: "POST",
+            const url = initialData
+                ? `/api/internships.native/${initialData.id}`
+                : "/api/internships/native";
+
+            const method = initialData ? "PUT" : "POST";
+
+            const res = await fetch(url, {
+                method: method,
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({title, location, stipend, duration, description, skills})
             });
