@@ -15,7 +15,7 @@ export default function RecruiterProfile() {
                     onClick={() => setActiveTab("company")}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-brand font-bold text-sm transition-all duration-300 
                         ${activeTab === "company" 
-                            ? "bg-primary text-background shadow-[0_0_15px_rgba(255,255,255,0.5)] scale-105"
+                            ? "bg-primary text-background scale-105"
                             : "text-secondary/60 hover:text-primary hover:bg-white/5" 
                         }
                     `}
@@ -27,7 +27,7 @@ export default function RecruiterProfile() {
                     onClick={() => setActiveTab("listings")}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-brand font-bold text-sm transition-all duration-300 
                         ${activeTab === "listings"
-                            ? "bg-primary text-background shadow-[0_0_15px_rgba(255,255,255,0.5)] scale-105"
+                            ? "bg-primary text-background scale-105"
                             : "text-secondary/60 hover:text-primary hover:bg-white/5"
                         }
                     `}
