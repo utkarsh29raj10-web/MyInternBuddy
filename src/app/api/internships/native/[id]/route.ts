@@ -52,7 +52,7 @@ export async function PUT(req: Request, {params}: {params: {id: string}}) {
     }
 }
 
-export async function DELTE(req: Request, {params}: {params: {id: string}}) {
+export async function DELETE(req: Request, {params}: {params: {id: string}}) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.email)

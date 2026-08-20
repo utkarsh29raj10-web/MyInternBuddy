@@ -44,7 +44,7 @@ export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuc
 
         try {
             const url = initialData
-                ? `/api/internships.native/${initialData.id}`
+                ? `/api/internships/native/${initialData.id}`
                 : "/api/internships/native";
 
             const method = initialData ? "PUT" : "POST";
