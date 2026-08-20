@@ -89,7 +89,7 @@ export default function RecruiterInternshipForm({onSuccess}: {onSuccess?: () => 
         <div className="w-full flex flex-col gap-6 animate-fade-in bg-secondary/5 border border-secondary/10 rounded-2xl p-6 md:p-8">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-brand font-bold text-secondary">
-                  Post a New Internship
+                  Create a New Listing
               </h3>
               <span className="text-sm font-sans font-bold text-secondary/50">
                   Step {step} of 2
