@@ -1,6 +1,6 @@
 "use client"
 import {useState, useEffect} from "react";
-import {Plus, Briefcase, Users, Loader2, Calendar, MapPin} from "lucide-react";
+import {Plus, Briefcase, Users, Loader2, Calendar, MapPin, ArrowLeft} from "lucide-react";
 import RecruiterInternshipForm from "@/components/profile/RecruiterInternshipForm";
 
 export default function RecruiterListings() {
@@ -41,7 +41,7 @@ export default function RecruiterListings() {
                     onClick={() => setIsCreating(false)}
                     className="mb-4 text-sm font-brand font-bold text-secondary/60 hover:text-primary tranisition-colors flex items-center gap-2"
                 >
-                    Back to Active Postings
+                    <ArrowLeft className="w-4 h-4"/> Go Back
                 </button>
 
                 <RecruiterInternshipForm
