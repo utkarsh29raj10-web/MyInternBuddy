@@ -9,6 +9,29 @@ export default function RecruiterListings() {
     const [error, setError] = useState(false);
 
     const [isCreating, setIsCreating] = useState(false);
+    const [editing, setEditing] = useState<string | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Are you sure?"))
+            return;
+        setDeletingId(id);
+
+        try {
+            const res = await fetch(
+                `/api/internships/native/${id}`,
+                {method: "DELETE"}
+            );
+            if (res.ok)
+                setListings(listings.filter(job => job.id !== id));
+        }
+        catch (error) {
+            console.error("Failed to delete", error);
+        }
+        finally {
+            setDeletingId(null);
+        }
+    };
 
     const fetchListings = async () => {
         setLoading(true);
@@ -34,19 +57,24 @@ export default function RecruiterListings() {
         fetchListings();
     }, []);
 
-    if (isCreating) {
+    if (isCreating || editing) {
         return (
             <div className="w-full flex flex-col items-start justify-start animate-fade-in">
                 <button
-                    onClick={() => setIsCreating(false)}
+                    onClick={() => {
+                        setIsCreating(false);
+                        setEditing(null);
+                    }}
                     className="mb-4 text-sm font-brand font-bold text-secondary/60 hover:text-primary transition-colors flex items-center gap-2"
                 >
                     <ArrowLeft className="w-4 h-4"/> Go Back
                 </button>
 
                 <RecruiterInternshipForm
+                    initialData={editing}
                     onSuccess={() => {
                         setIsCreating(false);
+                        setEditing(null);
                         fetchListings();
                     }}
                 />
@@ -142,12 +170,22 @@ export default function RecruiterListings() {
                                     </div>
 
                                     <div className="flex items-center gap-2 mt-1">
-                                        <button className="flex items-center gap-1.5 px-1.5 py-1.5 rounded-lg text-xs font-brand font-bold text-secondary/60 hover:text-primary hover:bg-primary/10 transition-colors">
+                                        <button
+                                            onClick={() => setEditing(job)}
+                                            className="flex items-center gap-1.5 px-1.5 py-1.5 rounded-lg text-xs font-brand font-bold text-secondary/60 hover:text-primary hover:bg-primary/10 transition-colors"
+                                        >
                                             <Edit2 className="w-3.5 h-3.5"/>
                                         </button>
 
-                                        <button className="flex items-center gap-1.5 px-1.5 py-1.5 rounded-lg text-xs font-brand font-bold text-secondary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors">
-                                            <Trash2 className="w-3.5 h-3.5"/>
+                                        <button
+                                            onClick={() => handleDelete(job.id)}
+                                            disabled={deletingId === job.id}
+                                            className="flex items-center gap-1.5 px-1.5 py-1.5 rounded-lg text-xs font-brand font-bold text-secondary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                                        >
+                                            {deletingId === job.id
+                                                ? <Loader2 className="w-3.5 h-3.5 animate-spin"/>
+                                                : <Trash2 className="w-3.5 h-3.5"/>
+                                            }
                                         </button>
                                     </div>
                                 </div>
