@@ -1,6 +1,6 @@
 "use client"
 import {useState, useEffect} from "react";
-import {Plus, Briefcase, Users, Loader2, Calendar, MapPin, ArrowLeft} from "lucide-react";
+import {Plus, Briefcase, Users, Loader2, Calendar, MapPin, ArrowLeft, Edit2, Trash2} from "lucide-react";
 import RecruiterInternshipForm from "@/components/profile/RecruiterInternshipForm";
 
 export default function RecruiterListings() {
@@ -39,7 +39,7 @@ export default function RecruiterListings() {
             <div className="w-full flex flex-col items-start justify-start animate-fade-in">
                 <button
                     onClick={() => setIsCreating(false)}
-                    className="mb-4 text-sm font-brand font-bold text-secondary/60 hover:text-primary tranisition-colors flex items-center gap-2"
+                    className="mb-4 text-sm font-brand font-bold text-secondary/60 hover:text-primary transition-colors flex items-center gap-2"
                 >
                     <ArrowLeft className="w-4 h-4"/> Go Back
                 </button>
@@ -139,6 +139,16 @@ export default function RecruiterListings() {
                                     <div className="flex items-center gap-2 text-secondary bg-secondary/5 px-4 py-2 rounded-xl font-brand font-bold text-sm">
                                         <Users className="w-4 h-4 text-primary"/>
                                         {job.applications?.length || 0} Applicants
+                                    </div>
+
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <button className="flex items-center gap-1.5 px-1.5 py-1.5 rounded-lg text-xs font-brand font-bold text-secondary/60 hover:text-primary hover:bg-primary/10 transition-colors">
+                                            <Edit2 className="w-3.5 h-3.5"/>
+                                        </button>
+
+                                        <button className="flex items-center gap-1.5 px-1.5 py-1.5 rounded-lg text-xs font-brand font-bold text-secondary/60 hover:text-red-500 hover:bg-red-500/10 transition-colors">
+                                            <Trash2 className="w-3.5 h-3.5"/>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
