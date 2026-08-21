@@ -52,7 +52,7 @@ export default function RecruiterProfile() {
                     `}
                 >
                     <Building2 className="w-4 h-4"/>
-                    Active Postings
+                    Active Listings
                 </button>
 
                 <button

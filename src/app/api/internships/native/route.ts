@@ -20,13 +20,13 @@ export async function GET() {
         if (!user || !user.company)
             return NextResponse.json([], {status: 200});
 
-        const postings = await prisma.nativeInternship.findMany({
+        const listings = await prisma.nativeInternship.findMany({
             where: {companyId: user.company.id},
             include: {applications: true},
             orderBy: {createdAt: 'desc'}
         });
 
-        return NextResponse.json(postings);
+        return NextResponse.json(listings);
     } catch (error) {
         return NextResponse.json(
             {error: "Internal Error"},
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
         return NextResponse.json(newInternship, {status: 201});
     }
     catch (error) {
-        console.error("Something went wrong while creating the posting", error);
+        console.error("Something went wrong while creating the post", error);
         return NextResponse.json(
             {error: "Internal Error"},
             {status: 500}
