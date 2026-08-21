@@ -57,7 +57,7 @@ export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuc
 
             if (!res.ok) {
                 const data = await res.json();
-                throw new Error(data.error || "Failed to post internship");
+                throw new Error(data.error || "Failed to post listing");
             }
 
             setSuccess(true);
@@ -246,7 +246,7 @@ export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuc
                                 ? <Loader2 className="w-4 h-4 animate-spin"/>
                                 : <CheckCircle className="w-4 h-4"/>
                             }
-                            Post Internship
+                            New Listing
                         </button>
                     </>
                 )}

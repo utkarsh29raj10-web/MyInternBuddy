@@ -60,7 +60,7 @@ export default function Navbar() {
                                 >
                                     <Briefcase className="w-5 h-5 sm:w-4 sm:h-4"/>
                                     <span className="hidden md:inline">
-                                        Post Internship
+                                        New Listing
                                     </span>
                                 </Link>
                                 <Link href="/profile?tab=applicants"
