@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {Bookmark, MapPin, Banknote, Clock, ExternalLink} from "lucide-react";
+import {Bookmark, MapPin, Banknote, Clock, ExternalLink, Send, X, Loader2} from "lucide-react";
 
 interface InternshipCardProps {
     job: {
@@ -14,6 +14,7 @@ interface InternshipCardProps {
         applyLink: string;
         sourcePlatform?: string | null;
         postedAt?: Date | null;
+        isNative?: boolean;
     };
     isInitiallySaved?: boolean;
 }
@@ -52,6 +53,41 @@ export default function InternshipCard({job, isInitiallySaved = false}: Internsh
         }
         finally {
             setIsSaving(false);
+        }
+    };
+
+    const [showApplyModal, setShowApplyModal] = useState(false);
+    const [coverLetter, setCoverLetter] = useState("");
+    const [isApplying, setIsApplying] = useState(false);
+    const [applyError, setApplyError] = useState("");
+    const [applySuccess, setApplySuccess] = useState(false);
+
+    const handleNativeApply = async () => {
+        setIsApplying(true);
+        setApplyError("");
+
+        try {
+            const res = await fetch("/api/applications/native", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({internshipId: job.id, coverLetter})
+            });
+            const data = await res.json();
+
+            if (!res.ok)
+                throw new Error(data.error || "Failed to apply");
+
+            setApplySuccess(true);
+            setTimeout(() => {
+                setShowApplyModal(false);
+                setApplySuccess(false);
+            }, 3000);
+        }
+        catch (error: any) {
+            setApplyError(error.message);
+        }
+        finally {
+            setIsApplying(false);
         }
     };
 
@@ -102,16 +138,91 @@ export default function InternshipCard({job, isInitiallySaved = false}: Internsh
                 <span className="text-xs font-sans text-secondary opacity-60">
                     via {job.sourcePlatform || "Google Jobs"}
                 </span>
-                <a
-                    href={job.applyLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-5 py-2 bg-primary text-background font-sans font-bold text-s rounded-xl hover:opacity-90 transition-opacity shadow-md"
-                >
-                    Apply Now
-                    <ExternalLink className="w-4 h-4"/>
-                </a>
+                {job.isNative ? (
+                    <button
+                        onClick={() => setShowApplyModal(true)}
+                        className="flex items-center gap-2 px-5 py-2 bg-primary text-background font-sans font-bold text-s rounded-xl hover:opacity-80 transition-opacity shadow-md"
+                    >
+                        Easy Apply
+                        <Send className="w-4 h-4"/>
+                    </button>
+                ) : (
+                    <a
+                        href={job.applyLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-5 py-2 bg-primary text-background font-sans font-bold text-s rounded-xl hover:opacity-80 transition-opacity shadow-md"
+                    >
+                        Apply Now
+                        <ExternalLink className="w-4 h-4"/>
+                    </a>
+                )}
             </div>
+
+            {showApplyModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-md animate-fade-in"
+                     onClick={() => setShowApplyModal(false)}
+                >
+                    <div className="w-full max-w-lg bg-background border border-secondary/20 rounded-3xl p-8 shadow-2xl relative"
+                         onClick={e => e.stopPropagation()}
+                    >
+                        <button onClick={() => setShowApplyModal(false)}
+                                className="absolute top-6 right-6 text-secondary/50 hover:text-primary transition-colors"
+                        >
+                            <X className="w-5 h-5"/>
+                        </button>
+
+                        {applySuccess ? (
+                            <div className="py-8 text-center animate-fade-in">
+                                <h3 className="text-2xl font-brand font-bold text-primary mb-2">
+                                    Applied Successfully!
+                                </h3>
+                                <p className="text-secondary/80 font-sans">
+                                    Your application will be reviewed shortly.
+                                </p>
+                            </div>
+                        ) : (
+                            <>
+                                <h3 className="text-2xl font-brand font-bold text-primary mb-2">
+                                    Apply to {job.company}
+                                </h3>
+                                <p className="text-secondary/80 text-sm font-sans mb-6">
+                                    Your profile & resume will be attached automatically.
+                                </p>
+
+                                {applyError &&
+                                    <p className="text-red-500 text-sm mb-4 font-bold bg-red-500/10 p-3 rounded-xl">
+                                        {applyError}
+                                    </p>
+                                }
+
+                                <label className="text-sm font-brand font-bold text-secondary/80 mb-2 block">
+                                    Why should we hire you? (Optional)
+                                </label>
+
+                                <textarea
+                                    rows={5}
+                                    value={coverLetter}
+                                    onChange={(e) => setCoverLetter(e.target.value)}
+                                    className="w-full bg-secondary/5 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary transition-all resize-none mb-6"
+                                    placeholder="I'm a great fit because..."
+                                />
+
+                                <button
+                                    onClick={handleNativeApply}
+                                    disabled={isApplying}
+                                    className="w-full flex items-center justify-center gap-2 py-4 bg-primary text-background font-brand font-bold text-lg rounded-xl hover:opacity-80 transition-opacity disabled:opacity-50 shadow-xl"
+                                >
+                                    {isApplying
+                                        ? <Loader2 className="w-5 h-5 animate-spin"/>
+                                        : "Submit Application"
+                                    }
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
