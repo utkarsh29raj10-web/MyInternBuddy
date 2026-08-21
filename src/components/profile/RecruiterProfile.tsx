@@ -4,9 +4,12 @@ import {useState} from "react";
 import {Building2} from "lucide-react";
 import CompanyProfileForm from "./CompanyProfileForm";
 import RecruiterListings from "@/components/profile/RecruiterListings";
+import {useSearchParams} from "next/navigation";
 
 export default function RecruiterProfile() {
-    const [activeTab, setActiveTab] = useState<"company" | "listings" | "applicants">("company");
+    const searchParams = useSearchParams();
+    const tabParam = searchParams.get("tab") as "company" | "listings" | "applicants" | null;
+    const [activeTab, setActiveTab] = useState<"company" | "listings" | "applicants">(tabParam|| "company");
 
     return (
         <div className="w-full flex flex-col gap-8">

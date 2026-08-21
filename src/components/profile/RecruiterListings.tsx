@@ -2,15 +2,23 @@
 import {useState, useEffect} from "react";
 import {Plus, Briefcase, Users, Loader2, Calendar, MapPin, ArrowLeft, Edit2, Trash2} from "lucide-react";
 import RecruiterInternshipForm from "@/components/profile/RecruiterInternshipForm";
+import {useSearchParams} from "next/navigation";
 
 export default function RecruiterListings() {
     const [listings, setListings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-    const [isCreating, setIsCreating] = useState(false);
+    const searchParams = useSearchParams();
+    const isCreateAction = searchParams.get("action") === "create";
+    const [isCreating, setIsCreating] = useState(isCreateAction);
     const [editing, setEditing] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (isCreateAction)
+            setIsCreating(true);
+    }, [isCreateAction]);
 
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure?"))

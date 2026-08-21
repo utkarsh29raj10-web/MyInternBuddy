@@ -55,7 +55,7 @@ export default function Navbar() {
 
                         {userRole === "RECRUITER" && (
                             <>
-                                <Link href="/post"
+                                <Link href="/profile?tab=listings&action=create"
                                       className="flex items-center gap-1.5 text-secondary hover:text-primary transition-colors"
                                 >
                                     <Briefcase className="w-5 h-5 sm:w-4 sm:h-4"/>
@@ -63,7 +63,7 @@ export default function Navbar() {
                                         Post Internship
                                     </span>
                                 </Link>
-                                <Link href="/applicants"
+                                <Link href="/profile?tab=applicants"
                                       className="flex items-center gap-1.5 text-secondary hover:text-primary transition-colors"
                                 >
                                     <User className="w-5 h-5 sm:w-4 sm:h-4"/>
