@@ -1,7 +1,9 @@
 "use client";
 
 import {useState} from "react";
+import {useSession} from "next-auth/react";
 import {Bookmark, MapPin, Banknote, Clock, ExternalLink, Send, X, Loader2} from "lucide-react";
+import {createPortal} from "react-dom";
 
 interface InternshipCardProps {
     job: {
@@ -20,6 +22,7 @@ interface InternshipCardProps {
 }
 
 export default function InternshipCard({job, isInitiallySaved = false}: InternshipCardProps) {
+    const {status} = useSession();
     const [isSaved, setIsSaved] = useState(isInitiallySaved);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -140,7 +143,13 @@ export default function InternshipCard({job, isInitiallySaved = false}: Internsh
                 </span>
                 {job.isNative ? (
                     <button
-                        onClick={() => setShowApplyModal(true)}
+                        onClick={() => {
+                            if (status === "unauthenticated") {
+                                alert("Please login before proceeding");
+                                return;
+                            }
+                            setShowApplyModal(!showApplyModal);
+                        }}
                         className="flex items-center gap-2 px-5 py-2 bg-primary text-background font-sans font-bold text-s rounded-xl hover:opacity-80 transition-opacity shadow-md"
                     >
                         Easy Apply
@@ -159,7 +168,7 @@ export default function InternshipCard({job, isInitiallySaved = false}: Internsh
                 )}
             </div>
 
-            {showApplyModal && (
+            {showApplyModal && typeof document !== "undefined" && createPortal (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-md animate-fade-in"
                      onClick={() => setShowApplyModal(false)}
                 >
@@ -221,7 +230,8 @@ export default function InternshipCard({job, isInitiallySaved = false}: Internsh
                             </>
                         )}
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );
