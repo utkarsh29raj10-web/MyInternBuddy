@@ -136,7 +136,33 @@ export default function ApplicantBoard() {
                                     </span>
                                 </div>
 
-                                <Droppable droppableId={column.id}>
+                                <Droppable
+                                    droppableId={column.id}
+                                    renderClone={(provided, snapshot, rubric) => {
+                                        const app = data.applicants[rubric.draggableId as keyof typeof data.applicants];
+                                        return (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                style={provided.draggableProps.style}
+                                                className="bg-background border border-primary/50 p-4 rounded-xl shadow-2xl"
+                                            >
+                                                <h5 className="font-brand font-bold text-primary flex items-center gap-2">
+                                                    <User className="w-3.5 h-3.5 text-secondary/50"/>
+                                                    {app.name}
+                                                </h5>
+                                                <p className="text-xs font-sans text-secondary/70 mt-2 flex items-center gap-1.5">
+                                                    <Briefcase className="w-3 h-3"/>
+                                                    {app.role}
+                                                </p>
+                                                <p className="text-xs text-secondary/40 mt-3 border-t border-secondary/5 pt-2">
+                                                    {app.date}
+                                                </p>
+                                            </div>
+                                        );
+                                    }}
+                                >
                                     {(provided, snapshot) => (
                                         <div
                                             ref={provided.innerRef}
@@ -153,7 +179,8 @@ export default function ApplicantBoard() {
                                                             ref={provided.innerRef}
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
-                                                            className={`bg-background border border-secondary/10 p-4 rounded-xl shadow-sm transition-all duration-200 ${snapshot.isDragging ? "shadow-xl scale-105 border-primary/30 rotate-2" : "hover:border-secondary/30"}`}
+                                                            style={provided.draggableProps.style}
+                                                            className={`bg-background border p-4 rounded-xl shadow-sm transition-shadow ${snapshot.isDragging ? "shadow-xl scale-105 border-primary/50 bg-background/90" : "border-secondary/10 hover:border-secondary/30"}`}
                                                         >
                                                             <h5 className="font-brand font-bold text-primary flex items-center gap-2">
                                                                 <User className="w-3.5 h-3.5 text-secondary/50"/>
