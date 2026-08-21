@@ -22,6 +22,38 @@ export async function GET(req: NextRequest) {
         const skip = (page - 1) * limit;
         const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000);
 
+        const nativeWhere: Prisma.NativeInternshipWhereInput = {
+            isActive: true,
+            OR: [
+                {title: {contains: query, mode: "insensitive"}},
+                {description: {contains: query, mode: "insensitive"}},
+                {company: {name: {contains: query, mode: "insensitive"}}}
+            ],
+            ...(location && {location: {contains: location, mode: "insensitive"}}),
+        };
+
+        let formattedNative: any[] = [];
+        if (page === 1) {
+            const nativeJobs = await prisma.nativeInternship.findMany({
+                where: nativeWhere,
+                orderBy: {createdAt: 'desc'},
+                include: {company: true}
+            });
+
+            formattedNative = nativeJobs.map(job => ({
+                id: job.id,
+                title: job.title,
+                company: job.company?.name || "Company",
+                location: job.location,
+                stipend: job.stipend,
+                duration: job.duration,
+                applyLink: "",
+                sourcePlatform: "MyInternBuddy",
+                postedAt: job.createdAt,
+                isNative: true
+            }));
+        }
+
         const whereCondition: Prisma.InternshipWhereInput = {
             OR: [
                 {title: {contains: query, mode: "insensitive"}},
@@ -58,7 +90,7 @@ export async function GET(req: NextRequest) {
         const responsePayload: any = {
             success: true,
             source: "cache",
-            data: cachedInternships
+            data: [...formattedNative, ...cachedInternships]
         };
 
         if (newNextPageToken !== null) {
