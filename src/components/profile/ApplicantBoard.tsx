@@ -1,59 +1,81 @@
 "use client"
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {DragDropContext, Droppable, Draggable, DropResult} from "@hello-pangea/dnd";
-import {User, Briefcase} from "lucide-react";
+import {User, Briefcase, Loader2, ExternalLink} from "lucide-react";
 
-// Creating mock data to test UI
-const INITIAL_DATA = {
-    columns: {
-        "pending": {
-            id: "pending",
-            title: "Pending Review",
-            applicantIds: ["app-1", "app-2"]
-        },
-        "interviewing": {
-            id: "interviewing",
-            title: "Interviewing",
-            applicantIds: ["app-3"]
-        },
-        "accepted": {
-            id: "accepted",
-            title: "Offered",
-            applicantIds: []
-        },
-        "rejected": {
-            id: "rejected",
-            title: "Rejected",
-            applicantIds: []
-        },
-    },
-    applicants: {
-        "app-1": {
-            id: "app-1",
-            name: "Son of Zeus",
-            role: "Frontend Developer Intern",
-            date: "Applied 2 Days Ago"
-        },
-        "app-2": {
-            id: "app-2",
-            name: "Zeus Himself",
-            role: "Associative Clerical Intern",
-            date: "Applied 5 days Ago"
-        },
-        "app-3": {
-            id: "app-3",
-            name: "Thor",
-            role: "Graphic Design Intern",
-            date: "Applied 1 hour ago"
-        },
-    },
-    columnOrder: ["pending", "interviewing", "accepted", "rejected"]
-};
-
+// Creating mock data to test UI -> Now real
 export default function ApplicantBoard() {
-    const [data, setData] = useState(INITIAL_DATA);
+    const [data, setData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
-    const onDragEnd = (result: DropResult) => {
+    useEffect(() => {
+        fetchApplications();
+    }, []);
+
+    const fetchApplications = async () => {
+        try {
+            const res = await fetch("/api/applications/native");
+            const result = await res.json();
+
+            if (result.success) {
+                const columns = {
+                    "PENDING": {
+                        id: "PENDING",
+                        title: "Pending Review",
+                        applicantIds: [] as string[]
+                    },
+                    "INTERVIEWING": {
+                        id: "INTERVIEWING",
+                        title: "Interviewing",
+                        applicantIds: [] as string []
+                    },
+                    "ACCEPTED": {
+                        id: "ACCEPTED",
+                        title: "Offered",
+                        applicantIds: [] as string []
+                    },
+                    "REJECTED": {
+                        id: "REJECTED",
+                        title: "Rejected",
+                        applicantIds: [] as string[]
+                    },
+                };
+                const applicantsMap: any = {};
+
+                result.internships.forEach((internship: any) => {
+                    internship.applications.forEach((app: any) => {
+                        const status = app.status || "PENDING";
+                        if (columns[status as keyof typeof columns])
+                            columns[status as keyof typeof columns].applicantIds.push(app.id);
+
+                        applicantsMap[app.id] = {
+                            id: app.id,
+                            name: app.student.name || "Unknown Applicant",
+                            role: internship.title,
+                            date: new Date(app.appliedAt).toLocaleDateString(),
+                            coverLetter: app.coverLetter,
+                            resumeLink: app.student.resumeLink || app.student.resumeUrl,
+                            email: app.student.email
+                        };
+                    });
+                });
+
+                setData({
+                    columns,
+                    applicants: applicantsMap,
+                    columnOrder: ["PENDING", "INTERVIEWING", "ACCEPTED", "REJECTED"]
+                });
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+
+    const onDragEnd = async (result: DropResult) => {
         const {destination, source, draggableId} = result;
 
         if (!destination)
@@ -103,6 +125,17 @@ export default function ApplicantBoard() {
                 }
             }
         });
+
+        try {
+            await fetch("/api/applications/native", {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({applicationId: draggableId, status: endCol.id})
+            });
+        }
+        catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -118,94 +151,111 @@ export default function ApplicantBoard() {
                 </div>
             </div>
 
-            <DragDropContext onDragEnd={onDragEnd}>
-                <div className="flex gap-6 overflow-x-auto pb-4 min-h-125">
-                    {data.columnOrder.map(columnId => {
-                        const column = data.columns[columnId as keyof typeof data.columns];
-                        const applicants = column.applicantIds.map(id => data.applicants[id as keyof typeof data.applicants]);
+            {loading || !data ? (
+                <div className="w-full flex justify-center py-24">
+                    <Loader2 className="w-8 h-8 animate-spin text-primary opacity-50"/>
+                </div>
+            ) : (
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <div className="flex gap-6 overflow-x-auto pb-4 min-h-125">
+                        {data.columnOrder.map((columnId: string) => {
+                            const column = data.columns[columnId as keyof typeof data.columns];
+                            const applicants = column.applicantIds.map((id: string) => data.applicants[id as keyof typeof data.applicants]);
 
-                        return (
-                            <div key={column.id}
-                                className="flex flex-col shrink-0 w-72 bg-secondary/5 rounded-2xl border border-secondary/10 overflow-hidden">
-                                <div className="p-4 border=b border-secondary/10 bg-background/50 flex justify-between items-center">
-                                    <h4 className="font-brand font-bold text-secondary">
-                                        {column.title}
-                                    </h4>
-                                    <span className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-full font-bold">
-                                        {applicants.length}
-                                    </span>
-                                </div>
+                            return (
+                                <div key={column.id}
+                                    className="flex flex-col shrink-0 w-72 bg-secondary/5 rounded-2xl border border-secondary/10 overflow-hidden">
+                                    <div className="p-4 border=b border-secondary/10 bg-background/50 flex justify-between items-center">
+                                        <h4 className="font-brand font-bold text-secondary">
+                                            {column.title}
+                                        </h4>
+                                        <span className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-full font-bold">
+                                            {applicants.length}
+                                        </span>
+                                    </div>
 
-                                <Droppable
-                                    droppableId={column.id}
-                                    renderClone={(provided, snapshot, rubric) => {
-                                        const app = data.applicants[rubric.draggableId as keyof typeof data.applicants];
-                                        return (
+                                    <Droppable
+                                        droppableId={column.id}
+                                        renderClone={(provided, snapshot, rubric) => {
+                                            const app = data.applicants[rubric.draggableId as keyof typeof data.applicants];
+                                            return (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    style={provided.draggableProps.style}
+                                                    className="bg-background border border-primary/50 p-4 rounded-xl shadow-2xl"
+                                                >
+                                                    <h5 className="font-brand font-bold text-primary flex items-center gap-2">
+                                                        <User className="w-3.5 h-3.5 text-secondary/50"/>
+                                                        {app.name}
+                                                    </h5>
+                                                    <p className="text-xs font-sans text-secondary/70 mt-2 flex items-center gap-1.5">
+                                                        <Briefcase className="w-3 h-3"/>
+                                                        {app.role}
+                                                    </p>
+                                                    <p className="text-xs text-secondary/40 mt-3 border-t border-secondary/5 pt-2">
+                                                        {app.date}
+                                                    </p>
+                                                </div>
+                                            );
+                                        }}
+                                    >
+                                        {(provided, snapshot) => (
                                             <div
                                                 ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                style={provided.draggableProps.style}
-                                                className="bg-background border border-primary/50 p-4 rounded-xl shadow-2xl"
+                                                {...provided.droppableProps}
+                                                className={`flex-1 p-4 flex flex-col gap-3 transition-colors ${snapshot.isDraggingOver ? "bg-primary/5" : ""}`}
                                             >
-                                                <h5 className="font-brand font-bold text-primary flex items-center gap-2">
-                                                    <User className="w-3.5 h-3.5 text-secondary/50"/>
-                                                    {app.name}
-                                                </h5>
-                                                <p className="text-xs font-sans text-secondary/70 mt-2 flex items-center gap-1.5">
-                                                    <Briefcase className="w-3 h-3"/>
-                                                    {app.role}
-                                                </p>
-                                                <p className="text-xs text-secondary/40 mt-3 border-t border-secondary/5 pt-2">
-                                                    {app.date}
-                                                </p>
+                                                {applicants.map((app: any, index: number) => (
+                                                    <Draggable key={app.id}
+                                                        draggableId={app.id}
+                                                        index={index}
+                                                    >
+                                                        {(provided, snapshot) => (
+                                                            <div
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                style={provided.draggableProps.style}
+                                                                className={`bg-background border p-4 rounded-xl shadow-sm transition-shadow ${snapshot.isDragging ? "shadow-xl scale-105 border-primary/50 bg-background/90" : "border-secondary/10 hover:border-secondary/30"}`}
+                                                            >
+                                                                <h5 className="font-brand font-bold text-primary flex items-center gap-2">
+                                                                    <User className="w-3.5 h-3.5 text-secondary/50"/>
+                                                                    {app.name}
+                                                                </h5>
+                                                                <p className="text-xs font-sans text-secondary/70 mt-2 flex items-center gap-1.5">
+                                                                    <Briefcase className="w-3 h-3"/>
+                                                                    {app.role}
+                                                                </p>
+
+                                                                {app.resumeLink && (
+                                                                    <a href={app.resumeLink}
+                                                                       target="_blank"
+                                                                       rel="noopener noreferrer"
+                                                                       className="flex items-center gap-1 text-xs font-sans font-bold text-primary opacity-60 hover:opacity-100 transition-opacity mt-4 bg-secondary/5 w-max px-2 py-1 rounded-md">
+                                                                        View Resume
+                                                                        <ExternalLink className="w-3 h-3"/>
+                                                                    </a>
+                                                                )}
+
+                                                                <p className="text-xs text-secondary/40 mt-3 border-t border-secondary/5 pt-2">
+                                                                    Applied on {app.date}
+                                                                </p>
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                                {provided.placeholder}
                                             </div>
-                                        );
-                                    }}
-                                >
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.droppableProps}
-                                            className={`flex-1 p-4 flex flex-col gap-3 transition-colors ${snapshot.isDraggingOver ? "bg-primary/5" : ""}`}
-                                        >
-                                            {applicants.map((app, index) => (
-                                                <Draggable key={app.id}
-                                                    draggableId={app.id}
-                                                    index={index}
-                                                >
-                                                    {(provided, snapshot) => (
-                                                        <div
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            style={provided.draggableProps.style}
-                                                            className={`bg-background border p-4 rounded-xl shadow-sm transition-shadow ${snapshot.isDragging ? "shadow-xl scale-105 border-primary/50 bg-background/90" : "border-secondary/10 hover:border-secondary/30"}`}
-                                                        >
-                                                            <h5 className="font-brand font-bold text-primary flex items-center gap-2">
-                                                                <User className="w-3.5 h-3.5 text-secondary/50"/>
-                                                                {app.name}
-                                                            </h5>
-                                                            <p className="text-xs font-sans text-secondary/70 mt-2 flex items-center gap-1.5">
-                                                                <Briefcase className="w-3 h-3"/>
-                                                                {app.role}
-                                                            </p>
-                                                            <p className="text-xs text-secondary/40 mt-3 border-t border-secondary/5 pt-2">
-                                                                {app.date}
-                                                            </p>
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ))}
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
-                            </div>
-                        );
-                    })}
-                </div>
-            </DragDropContext>
+                                        )}
+                                    </Droppable>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </DragDropContext>
+            )}
         </div>
     );
 }

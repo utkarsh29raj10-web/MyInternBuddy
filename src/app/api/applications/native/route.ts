@@ -58,3 +58,107 @@ export async function POST(req: Request) {
         );
     }
 }
+
+export async function GET(req: Request) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session?.user?.email)
+            return NextResponse.json(
+                {error: "Unauthorized"},
+                {status: 401}
+            );
+
+        const user = await prisma.user.findUnique({
+            where: {email: session.user.email},
+            include: {company: true}
+        });
+
+        if (!user || user.role !== "RECRUITER" || !user.company)
+            return NextResponse.json(
+                {error: "Only recruiters can view applications"},
+                {status: 403}
+            );
+
+        const internships = await prisma.nativeInternship.findMany({
+            where: {companyId: user.company.id},
+            include: {
+                applications: {
+                    include: {
+                        student: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                                college: true,
+                                resumeLink: true,
+                                resumeUrl: true
+                            }
+                        }
+                    },
+                    orderBy: {appliedAt: 'desc'}
+                }
+            },
+            orderBy: {createdAt: 'desc'}
+        });
+
+        return NextResponse.json({success: true, internships});
+    }
+    catch (error) {
+        console.error("GET Applications Error:", error);
+        return NextResponse.json(
+            {error: "Internal Error"},
+            {status: 500}
+        );
+    }
+}
+
+export async function PUT(req: Request) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session?.user?.email)
+            return NextResponse.json(
+                {error: "Unauthorized"},
+                {status: 401}
+            );
+
+        const user = await prisma.user.findUnique({
+            where: {email: session.user.email},
+            include: {company: true}
+        });
+
+        if (!user || user.role !== "RECRUITER" || !user.company)
+            return NextResponse.json(
+                {error: "Unauthorized"},
+                {status: 403}
+            );
+
+        const {applicationId, status} = await req.json();
+
+        const application = await prisma.nativeApplication.findUnique({
+            where: {id: applicationId},
+            include: {internship: true}
+        });
+
+        if (!application || application.internship.companyId !== user.company.id)
+            return NextResponse.json(
+                {error: "Unauthorized"},
+                {status: 403}
+            );
+
+        const updated = await prisma.nativeApplication.update({
+            where: {id: applicationId},
+            data: {status}
+        });
+
+        return NextResponse.json(
+            {success: true, application: updated}
+        );
+    }
+    catch (error) {
+        console.error("PUT Application Error:", error);
+        return NextResponse.json(
+            {error: "Internal Error"},
+            {status: 500}
+        );
+    }
+}
