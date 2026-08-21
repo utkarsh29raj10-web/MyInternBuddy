@@ -5,6 +5,7 @@ import {Building2} from "lucide-react";
 import CompanyProfileForm from "./CompanyProfileForm";
 import RecruiterListings from "@/components/profile/RecruiterListings";
 import {useSearchParams} from "next/navigation";
+import ApplicantBoard from "./ApplicantBoard";
 
 export default function RecruiterProfile() {
     const searchParams = useSearchParams();
@@ -71,9 +72,9 @@ export default function RecruiterProfile() {
                     </div>
                 )}
                 {activeTab === "applicants" &&
-                    <h2 className="text-2xl font-brand font-bold text-primary opacity-50">
-                        Applicant Board
-                    </h2>
+                    <div className="w-full flex flex-col items-start justify-start animate-fade-in">
+                        <ApplicantBoard/>
+                    </div>
                 }
             </div>
         </div>
