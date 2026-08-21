@@ -4,7 +4,7 @@ import {useState, useEffect} from "react";
 import {Building2} from "lucide-react";
 import CompanyProfileForm from "./CompanyProfileForm";
 import RecruiterListings from "@/components/profile/RecruiterListings";
-import {useSearchParams} from "next/navigation";
+import {useSearchParams, useRouter, usePathname} from "next/navigation";
 import ApplicantBoard from "./ApplicantBoard";
 
 export default function RecruiterProfile() {
@@ -17,11 +17,21 @@ export default function RecruiterProfile() {
             setActiveTab(tabParam);
     }, [tabParam]);
 
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const handleTabChange = (tab: "company" | "listings" | "applicants") => {
+        setActiveTab(tab);
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("tab", tab);
+        router.replace(`${pathname}?${params.toString()}`, {scroll: false});
+    };
+
     return (
         <div className="w-full flex flex-col gap-8">
             <div className="w-full pl-4 flex items-center justify-start gap-2 bg-background/40 backdrop-blur-2xl border border-white/10 px-4 py-3 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-x-auto">
                 <button
-                    onClick={() => setActiveTab("company")}
+                    onClick={() => handleTabChange("company")}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-brand font-bold text-sm transition-all duration-300 
                         ${activeTab === "company" 
                             ? "bg-primary text-background scale-105"
@@ -33,7 +43,7 @@ export default function RecruiterProfile() {
                     Company Profile
                 </button>
                 <button
-                    onClick={() => setActiveTab("listings")}
+                    onClick={() => handleTabChange("listings")}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-brand font-bold text-sm transition-all duration-300 
                         ${activeTab === "listings"
                             ? "bg-primary text-background scale-105"
@@ -46,7 +56,7 @@ export default function RecruiterProfile() {
                 </button>
 
                 <button
-                    onClick={() => setActiveTab("applicants")}
+                    onClick={() => handleTabChange("applicants")}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-brand font-bold text-sm transition-all duration-300 
                         ${activeTab === "applicants"
                         ? "bg-primary text-background scale-105"
