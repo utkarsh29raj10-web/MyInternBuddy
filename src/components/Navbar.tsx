@@ -48,7 +48,7 @@ export default function Navbar() {
                     >
                         <Search className="w-5 h-5 sm:w-4 sm:h-4"/>
                         <span className="hidden md:inline">
-                            Find Internships
+                            Find Opportunities
                         </span>
                     </Link>
                 )}
