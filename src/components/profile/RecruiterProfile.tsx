@@ -1,6 +1,6 @@
 "use client"
 
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Building2} from "lucide-react";
 import CompanyProfileForm from "./CompanyProfileForm";
 import RecruiterListings from "@/components/profile/RecruiterListings";
@@ -10,6 +10,11 @@ export default function RecruiterProfile() {
     const searchParams = useSearchParams();
     const tabParam = searchParams.get("tab") as "company" | "listings" | "applicants" | null;
     const [activeTab, setActiveTab] = useState<"company" | "listings" | "applicants">(tabParam|| "company");
+
+    useEffect(() => {
+        if (tabParam)
+            setActiveTab(tabParam);
+    }, [tabParam]);
 
     return (
         <div className="w-full flex flex-col gap-8">
