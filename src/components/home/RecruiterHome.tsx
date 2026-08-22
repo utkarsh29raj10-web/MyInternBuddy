@@ -2,8 +2,37 @@
 import {useState, useEffect} from "react";
 import { Briefcase, Users, Loader2 } from "lucide-react";
 import Link from "next/link";
+import ApplicantBoard from "@/components/profile/ApplicantBoard";
 
 export default function RecruiterHome() {
+    const [stats, setStats] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const res = await fetch("/api/applications/native");
+                const result = await res.json();
+
+                if (result.success) {
+                    const activeListings = result.internships.filter((i: any) => i.isActive);
+                    const recentApplicants = result.internships
+                        .sort((a: any, b: any) => new Date(b.appliedAt).getTime() - new Date(a.appliedAt).getTime())
+                        .slice(0, 4);
+
+                    setStats({activeListings, recentApplicants});
+                }
+            }
+            catch (error) {
+                console.error(error);
+            }
+            finally {
+                setLoading(false);
+            }
+        };
+        fetchDashboardData();
+    }, []);
+
     return (
         <div className="w-full min-h-screen flex flex-col items-center pt-32 px-6 pb-12 animate-fade-in">
             <div className="fixed top-0 right-0 w-[800px] h-[600px] bg-secondary opacity-5 blur-[120px] rounded-full pointer-events-none -z-10"/>
@@ -41,41 +70,68 @@ export default function RecruiterHome() {
             </section>
 
             <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="md:col-span-2 flex flex-col gap-10">
-                    <section>
-                        <div className="flex items-center justify-between mb-6">
-                            <h2 className="font-brand text-l font-bold text-primary">
-                                Applicant Pipeline
-                            </h2>
-                            <button className="text-secondary pr-4 opacity-60 hover:opacity-100 active:opacity-60 font-sans text-s font-bold transition-opacity">
-                                View All
-                            </button>
-                        </div>
-
-                        <div className="w-full h-[400px] rounded-3xl border border-secondary/20 shadow-sm glass-panel flex flex-col items-center justify-center p-6 text-center">
-                            <Users className="w-12 h-12 text-primary opacity-30 mb-4 animate-pulse"/>
-                            <h3 className="font-brand text-m font-bold text-primary mb-1">
-                                Pipeline Empty
-                            </h3>
-                            <p className="font-sans text-s text-secondary opacity-70">
-                                Your interactice applicant Kanban board will appear here
-                            </p>
-                        </div>
-                    </section>
+                <div className="md:col-span-2 flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                        <h2 className="font-brand text-l font-bold text-primary">
+                            Applicant Pipeline
+                        </h2>
+                        <Link href="/profile?tab=applicants"
+                              className="text-secondary pr-4 opacity-60 hover:opacity-100 active:opacity-60 font-sans text-s font-bold transition-opacity">
+                            View All &rarr;
+                        </Link>
+                    </div>
+                    <div className="w-full h-100 overflow-y-auto rounded-3xl border border-secondary/20 shadow-sm bg-background p-4 relative">
+                        <ApplicantBoard/>
+                    </div>
                 </div>
 
-                <div className="md:col-span-1 flex flex-col gap-10">
-                    <section>
-                        <h2 className="font-brand text-l font-bold text-primary mb-6">
+                <div className="md:col-span-1 flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                        <h2 className="font-brand text-l font-bold text-primary">
                             Active Listings
                         </h2>
-                        <div className="w-full h-48 rounded-3xl border border-secondary/20 shadow-sm glass-panel flex flex-col items-center justify-center p-6 text-center mb-8">
-                            <Briefcase className="w-10 h-10 text-primary opacity-30 mb-4 animate-pulse"/>
-                            <p className="font-sans text-s text-secondary opacity-70">
-                                Listing performance metrics
-                            </p>
-                        </div>
-                    </section>
+                        <Link href="/profile?tab=listings"
+                              className="text-secondary pr-4 opacity-60 hover:opacity-100 active:opacity-60 font-sans text-s font-bold transition-opacity">
+                            View All &rarr;
+                        </Link>
+                    </div>
+
+                    <div className="w-full h-100 rounded-3xl border border-secondary/2 shadow-sm bg-secondary/5 flex flex-col p-4">
+                        {loading ? (
+                            <div className="flex-1 flex justify-center items-center">
+                                <Loader2 className="w-8 h-8 animate-spin text-primary opacity-50"/>
+                            </div>
+                        ) : stats?.activeListings?.length > 0 ? (
+                            <div className="flex flex-col gap-4">
+                                {stats.activeListings.slice(0, 3).map((job: any) => (
+                                    <div key={job.id}
+                                         className="w-full bg-background border border-secondary/10 p-4 rounded-xl flex flex-col gap-1 hover:border-primary/40 transition-colors">
+                                        <h4 className="font-brand font-bold text-primary text-md truncate">
+                                            {job.title}
+                                        </h4>
+                                        <p className="text-xs font-sans text-secondary/80">
+                                            {job.location}
+                                        </p>
+                                        <div className="flex justify-between items-center mt-2 pt-2 border-t border-secondary/5">
+                                            <span className="text-xs text-green-600 bg-green-500/10 px-2 py-0.5 rounded-full font-bold">
+                                                Active
+                                            </span>
+                                            <span className="text-xs text-secondary/60 font-bold">
+                                                {job.applications?.length || 0} Applicants
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
+                                <Briefcase className="w-10 h-10 text-primary opacity-30 mb-4"/>
+                                <p className="font-sans text-sm text-secondary opacity-80">
+                                    No Active Llistings yet.
+                                </p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
