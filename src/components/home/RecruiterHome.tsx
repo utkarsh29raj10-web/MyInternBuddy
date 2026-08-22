@@ -1,6 +1,6 @@
 "use client";
 import {useState, useEffect} from "react";
-import { Briefcase, Users, Loader2 } from "lucide-react";
+import { Briefcase, Loader2 } from "lucide-react";
 import Link from "next/link";
 import ApplicantBoard from "@/components/profile/ApplicantBoard";
 
@@ -127,7 +127,7 @@ export default function RecruiterHome() {
                             <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
                                 <Briefcase className="w-10 h-10 text-primary opacity-30 mb-4"/>
                                 <p className="font-sans text-sm text-secondary opacity-80">
-                                    No Active Llistings yet.
+                                    No Active Listings yet.
                                 </p>
                             </div>
                         )}
