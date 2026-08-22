@@ -80,7 +80,7 @@ export default function RecruiterHome() {
                             View All &rarr;
                         </Link>
                     </div>
-                    <div className="w-full h-100 overflow-y-auto rounded-3xl border border-secondary/20 shadow-sm bg-background p-4 relative">
+                    <div className="w-full h-110 overflow-y-auto rounded-3xl border border-secondary/20 shadow-sm bg-background p-4 relative">
                         <ApplicantBoard/>
                     </div>
                 </div>
@@ -96,7 +96,7 @@ export default function RecruiterHome() {
                         </Link>
                     </div>
 
-                    <div className="w-full h-100 rounded-3xl border border-secondary/2 shadow-sm bg-secondary/5 flex flex-col p-4">
+                    <div className="w-full h-110 rounded-3xl border border-secondary/20 shadow-sm bg-background flex flex-col p-4">
                         {loading ? (
                             <div className="flex-1 flex justify-center items-center">
                                 <Loader2 className="w-8 h-8 animate-spin text-primary opacity-50"/>
@@ -105,7 +105,7 @@ export default function RecruiterHome() {
                             <div className="flex flex-col gap-4">
                                 {stats.activeListings.slice(0, 3).map((job: any) => (
                                     <div key={job.id}
-                                         className="w-full bg-background border border-secondary/10 p-4 rounded-xl flex flex-col gap-1 hover:border-primary/40 transition-colors">
+                                         className="w-full bg-background border border-secondary/10 bg-secondary/5 p-4 rounded-xl flex flex-col gap-1 hover:border-primary/40 transition-colors">
                                         <h4 className="font-brand font-bold text-primary text-md truncate">
                                             {job.title}
                                         </h4>
