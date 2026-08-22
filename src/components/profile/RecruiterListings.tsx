@@ -108,16 +108,16 @@ export default function RecruiterListings() {
 
     return (
         <div className="w-full flex flex-col gap-6 animate-fade-in">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 w-full bg-secondary/5 border border-seconday/10 rounded-2xl p-6">
-                <div>
-                    <h3 className="text-l font-brand font-bold text-secondary mb-1">
-                        Active Listings
-                    </h3>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-50 rounded-2xl p-0">
+                {/*<div>*/}
+                {/*    <h3 className="text-l font-brand font-bold text-secondary mb-1">*/}
+                {/*        Active Listings*/}
+                {/*    </h3>*/}
 
-                    <p className="text-sm font-sans text-secondary/60">
-                        Manage your job listings and track applicants.
-                    </p>
-                </div>
+                {/*    <p className="text-sm font-sans text-secondary/60">*/}
+                {/*        Manage your job listings and track applicants.*/}
+                {/*    </p>*/}
+                {/*</div>*/}
 
                 <button
                     onClick={() => setIsCreating(true)}

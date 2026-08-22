@@ -58,10 +58,10 @@ export default function CompanyProfileForm() {
     }
 
     return (
-        <div className="w-full flex flex-col gap-6 animate-fade-in bg-secondary/5 border border-secondary/10 rounded-2xl p-6 md:p-8">
-            <h3 className="text-l font-brand font-bold text-secondary mb-2">
-                Company Details
-            </h3>
+        <div className="w-full flex flex-col gap-6 animate-fade-in rounded-2xl">
+            {/*<h3 className="text-l font-brand font-bold text-secondary mb-2">*/}
+            {/*    Company Details*/}
+            {/*</h3>*/}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2 md:col-span-1">
