@@ -1,5 +1,7 @@
-import {ComingSoon} from "@/components/ui/ComingSoon";
-import { Briefcase, Users } from "lucide-react";
+"use client";
+import {useState, useEffect} from "react";
+import { Briefcase, Users, Loader2 } from "lucide-react";
+import Link from "next/link";
 
 export default function RecruiterHome() {
     return (
@@ -25,9 +27,14 @@ export default function RecruiterHome() {
                             <p className="font-sans text-s text-foreground opacity-80">
                                 Need to fill roles faster? Contact our sales team to get priority listings and AI-driven candidate filters.
                             </p>
-                            <button className="mt-2 px-5 py-2 bg-background text-primary font-bold font-sans text-s rounded-lg hover:bg-background/80 transition-colors">
-                                Contact Sales
-                            </button>
+                            <div className="mt-2 group relative w-max">
+                                <button className="px-5 py-2 bg-background text-primary font-bold font-sans text-s rounded-lg hover:bg-background/80 transition-colors cursor-not-allowed">
+                                    Contact Sales
+                                </button>
+                                <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-background text-primary font-bold text-xs px-3 py-1.5 rounded-lg pointer-events-none whitespace-nowrap shadow-lg">
+                                    Coming Soon!
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
