@@ -1,7 +1,7 @@
 "use client"
 import {useState, useEffect} from "react";
 import {DragDropContext, Droppable, Draggable, DropResult} from "@hello-pangea/dnd";
-import {User, Briefcase, Loader2, ExternalLink} from "lucide-react";
+import {User, Briefcase, Loader2, ExternalLink, ChevronDown} from "lucide-react";
 import {useSearchParams} from "next/navigation";
 
 // Creating mock data to test UI -> Now real
@@ -159,20 +159,26 @@ export default function ApplicantBoard() {
                     </p>
                 {/*</div>*/}
 
-                <select
-                    value={selectedJobId}
-                    onChange={(e) => setSelectedJobId(e.target.value)}
-                    className="bg-background border border-secondary/20 text-primary text-s font-bold font-sans rounded-xl px-4 py-2 outline-none focus:border-primary/50"
-                >
-                    <option value="ALL">All Listings</option>
-                    {allInternships.map(job => (
-                        <option key={job.id}
-                            value={job.id}
-                        >
-                            {job.title}
+                <div className="relative">
+                    <select
+                        value={selectedJobId}
+                        onChange={(e) => setSelectedJobId(e.target.value)}
+                        className="appearance-none bg-background border border-secondary/20 text-primary text-s font-bold font-sans rounded-xl pl-4 pr-12 min-w-40 py-2 outline-none focus:border-primary/50 cursor-pointer"
+                    >
+                        <option value="ALL">
+                            All Listings
                         </option>
-                    ))}
-                </select>
+
+                        {allInternships.map(job => (
+                            <option key={job.id}
+                                value={job.id}
+                            >
+                                {job.title}
+                            </option>
+                        ))}
+                    </select>
+                    <ChevronDown className="w-4 h-4 text-primary absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"/>
+                </div>
             </div>
 
             {loading || !data ? (
