@@ -20,20 +20,13 @@
     "url": "https://github.com/utkarsh29raj10-web/MyInternBuddy/issues"
   },
   "homepage": "https://github.com/utkarsh29raj10-web/MyInternBuddy#readme",
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.2",
+  "dependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^26.1.1",
     "@types/pg": "^8.20.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.5.2",
-    "postcss": "^8.5.19",
-    "prisma": "^7.8.0",
-    "tailwindcss": "^4.3.2",
-    "typescript": "^7.0.2"
-  },
-  "dependencies": {
+    "typescript": "^7.0.2",
     "@hello-pangea/dnd": "^18.0.1",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@prisma/adapter-pg": "^7.8.0",
@@ -44,6 +37,11 @@
     "next-auth": "^4.24.14",
     "pg": "^8.22.0",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "@tailwindcss/postcss": "^4.3.2",
+    "autoprefixer": "^10.5.2",
+    "postcss": "^8.5.19",
+    "prisma": "^7.8.0",
+    "tailwindcss": "^4.3.2"
   }
 }
