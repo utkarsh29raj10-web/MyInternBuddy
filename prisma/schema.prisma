@@ -90,6 +90,7 @@ model Internship {
   location       String
   stipend        String?
   duration       String?
+  employmentType String?
   startDate      DateTime?
   skills         String[]
   applyLink      String            @db.Text
@@ -135,6 +136,7 @@ model NativeInternship {
   location         String
   stipend          String?
   duration         String?
+  employmentType   String?
   description      String            @db.Text
   skills           String[]
   isActive         Boolean           @default(true)
