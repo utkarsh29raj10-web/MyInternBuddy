@@ -1,4 +1,5 @@
 // fixed infinite scroll using AI
+// fixed a second time using AI. this time, I didn't just take help but the actual codes too.
 
 import {prisma} from "@/lib/prisma";
 import crypto from "crypto";
@@ -54,37 +55,35 @@ function parseExtensions(extensions: string[] = []) {
     return {stipend, duration, postedAt};
 }
 
-export async function fetchAndCacheGoogleJobs(query: string, location?: string, pageToken?: string) {
+export async function fetchAndCacheGoogleJobs(query: string, location?: string, employmentType: string = "Internship", pageToken?: string) {
     const apiKey = process.env.SERPAPI_KEY;
     if (!apiKey) return { jobs: [], nextPageToken: null };
 
-    const finalQuery = query.toLowerCase().includes("intern") ? query : `${query} internship`;
+    const cleanQuery = query.toLowerCase().replace(/internship|part time|full time|apprenticeship/g,"").trim();
+    const finalQuery = `${cleanQuery} ${employmentType}`.trim();
 
     const isRemote = location?.toLowerCase().includes("remote");
-    const locationParam = isRemote ? "" : (location ? `&location=${encodeURIComponent(location)}` : "");
+    const locationParam = location && !isRemote
+        ? `&location=${encodeURIComponent(location)}}`
+        : '&gl=us'
     const ltypeParam = isRemote ? "&ltype=1" : "";
 
-    let currentUrl: string | null = pageToken
+    let currentUrl: string = pageToken
         ? `${pageToken}&api_key=${apiKey}`
         : `https://serpapi.com/search.json?engine=google_jobs&q=${encodeURIComponent(finalQuery)}&api_key=${apiKey}${locationParam}${ltypeParam}`;
 
-    let allNormalizedJobs: any[] = [];
+    let normalizedJobs: any[] = [];
     let lastNextToken: string | null = null;
 
-    for (let i = 0; i < 5; i++) {
-        if (!currentUrl) break;
+    try {
+        const res = await fetch(currentUrl);
+        const apiData: any = await res.json();
 
-        try {
-            const res: Response = await fetch(currentUrl);
-            const apiData: any = await res.json();
-
-            if (!apiData.jobs_results || apiData.jobs_results.length === 0) break;
-
-            const normalizedJobs = apiData.jobs_results.map((job: any) => {
+        if (!apiData.jobs_results && apiData.jobs_results.length > 0) {
+            normalizedJobs = apiData.jobs_results.map((job: any) => {
                 const {stipend, duration, postedAt} = parseExtensions(job.extensions);
-
                 let applyLink = "#";
-                let sourcePlatform = job.via ? job.via.replace("via ", "") : "Google Jobs";
+                let sourcePlatform = job.via ? job.via.replace("via", "") : "Google Jobs";
 
                 if (job.apply_options && job.apply_options.length > 0) {
                     applyLink = job.apply_options[0].link;
@@ -94,7 +93,6 @@ export async function fetchAndCacheGoogleJobs(query: string, location?: string, 
                 } else if (job.share_link) {
                     applyLink = job.share_link;
                 }
-
                 return {
                     id: job.job_id || generateJobId(job.title, job.company_name, job.location),
                     title: job.title,
@@ -103,6 +101,7 @@ export async function fetchAndCacheGoogleJobs(query: string, location?: string, 
                     location: job.location,
                     stipend,
                     duration,
+                    employmentType, // Map to our new database column
                     startDate: null,
                     skills: [],
                     applyLink,
@@ -111,30 +110,19 @@ export async function fetchAndCacheGoogleJobs(query: string, location?: string, 
                     fetchedAt: new Date(),
                 };
             });
-
-            allNormalizedJobs.push(...normalizedJobs);
-
+            // Extract the EXACT pagination URL for the next infinite scroll batch
             if (apiData.serpapi_pagination && apiData.serpapi_pagination.next) {
-                currentUrl = `${apiData.serpapi_pagination.next}&api_key=${apiKey}`;
                 lastNextToken = apiData.serpapi_pagination.next;
-            } else {
-                currentUrl = null;
-                lastNextToken = null;
             }
-        } catch (error) {
-            console.error(`Failed to fetch from SerpAPI on page ${i+1}:`, error);
-            break;
         }
+    } catch (error) {
+        console.error(`[SERPAPI] Failed to fetch:`, error);
+        return { jobs: [], nextPageToken: null };
     }
-
-    if (allNormalizedJobs.length === 0) return { jobs: [], nextPageToken: null };
-
-    const uniqueJobsMap = new Map();
-    allNormalizedJobs.forEach(job => uniqueJobsMap.set(job.id, job));
-    const uniqueJobsToSave = Array.from(uniqueJobsMap.values());
-
+    if (normalizedJobs.length === 0) return { jobs: [], nextPageToken: null };
+    // Instantly cache the new page of results to Prisma
     try {
-        const upsertPromises = uniqueJobsToSave.map((job: any) =>
+        const upsertPromises = normalizedJobs.map((job: any) =>
             prisma.internship.upsert({
                 where: { id: job.id },
                 update: { fetchedAt: new Date() },
@@ -145,9 +133,8 @@ export async function fetchAndCacheGoogleJobs(query: string, location?: string, 
     } catch (dbError) {
         console.error("[SERPAPI] Database upsert failed:", dbError);
     }
-
     return {
-        jobs: uniqueJobsToSave,
+        jobs: normalizedJobs,
         nextPageToken: lastNextToken
     };
 }
