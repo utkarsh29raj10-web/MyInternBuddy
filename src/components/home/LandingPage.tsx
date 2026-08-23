@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import LoginButton from "@/components/LoginButton";
 
 export default function LandingPage() {
     return (
@@ -25,10 +26,11 @@ export default function LandingPage() {
                       className="px-8 py-4 bg-primary text-background font-medium font-sans text-m rounded-md hover:opacity-80 active:opacity-60 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
                     Find Opportunities
                 </Link>
-                <Link href="/post"
-                      className="px-8 py-4 bg-transparent border-2 border-primary text-primary font-medium font-sans text-m rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
-                    Hire Talent
-                </Link>
+
+                <LoginButton
+                    text="Hire Talent"
+                    className="!px-8 !py-4 !bg-transparent !border-2 border-primary text-primary font-medium font-sans text-m rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition-all shadow-sm hover:shadow-md !hover:-translate-y-1"
+                />
             </div>
         </div>
     );
