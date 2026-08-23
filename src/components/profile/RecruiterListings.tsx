@@ -200,7 +200,7 @@ export default function RecruiterListings() {
                                             onClick={() => handleToggleActive(job)}
                                             className="px-2 py-1.5 rounded-lg text-xs font-brand font-bold text-secondary/60 hover:text-primary hover:bg-primary/10 transition-colors"
                                         >
-                                            {job.isActive ? "Mark Inactive" : "Mark Active"}
+                                            {job.isActive ? "Close Listing" : "Open Listing"}
                                         </button>
 
                                         <button
