@@ -4,7 +4,8 @@ import {User, Bookmark, History} from "lucide-react";
 import ProfileDetailsForm from "./ProfileDetailsForm";
 import PortfolioLinksForm from "./PortfolioLinksForm";
 import SavedInternshipFeed from "./SavedInternshipFeed";
-import {useSearchParams, useRouter, usePathname} from "next/navigation";
+import {useSearchParams} from "next/navigation";
+import TrackApplications from "@/components/home/TrackApplications";
 
 export default function StudentProfile() {
     const searchParams = useSearchParams();
@@ -75,9 +76,9 @@ export default function StudentProfile() {
                 }
 
                 {activeTab === "history" &&
-                    <h2 className="text-2xl font-brand font-bold text-primary opacity-50">
-                        Application History
-                    </h2>
+                    <div className="w-full animate-fade-in">
+                        <TrackApplications hideViewAll={true}/>
+                    </div>
                 }
             </div>
         </div>

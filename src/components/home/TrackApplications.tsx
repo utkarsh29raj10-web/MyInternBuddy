@@ -3,7 +3,7 @@ import {useState, useEffect} from "react";
 import {Clock, CheckCircle2, XCircle, FileText, Loader2} from "lucide-react";
 import Link from "next/link";
 
-export default function TrackApplications() {
+export default function TrackApplications({hideViewAll = false} : {hideViewAll?: boolean}) {
     const [applications, setApplications] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -64,10 +64,12 @@ export default function TrackApplications() {
                 <h2 className="font-brand text-l font-bold text-primary">
                     Track Applications
                 </h2>
-                <Link href="/profile?tab=history"
-                      className="text-secondary opacity-60 hover:opacity-100 font-sans text-sm font-bold transition-opacity">
-                    View All &rarr;
-                </Link>
+                {!hideViewAll && (
+                    <Link href="/profile?tab=history"
+                          className="text-secondary opacity-60 hover:opacity-100 font-sans text-sm font-bold transition-opacity">
+                        View All &rarr;
+                    </Link>
+                )}
             </div>
 
             <div className="w-full h-96 overflow-y-auto rounded-3xl border border-secondary/10 shadow-sm glass-panel p-4 flex flex-col gap-3">
