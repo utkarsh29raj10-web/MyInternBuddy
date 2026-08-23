@@ -101,12 +101,14 @@ model Internship {
 }
 
 model SavedInternship {
-  id           String     @id @default(cuid())
-  userId       String
-  internshipId String
-  savedAt      DateTime   @default(now())
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  internship   Internship @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+  id                 String            @id @default(cuid())
+  userId             String
+  internshipId       String
+  savedAt            DateTime          @default(now())
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  internship         Internship        @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+  nativeInternshipId String?
+  nativeInternship   NativeInternship? @relation(fields: [nativeInternshipId], references: [id], onDelete: Cascade)
 
   @@unique([userId, internshipId])
 }
@@ -127,16 +129,17 @@ model Company {
 }
 
 model NativeInternship {
-  id          String   @id @default(cuid())
-  companyId   String
-  title       String
-  location    String
-  stipend     String?
-  duration    String?
-  description String   @db.Text
-  skills      String[]
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  id               String            @id @default(cuid())
+  companyId        String
+  title            String
+  location         String
+  stipend          String?
+  duration         String?
+  description      String            @db.Text
+  skills           String[]
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  savedInternships SavedInternship[]
 
   company      Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
   applications NativeApplication[]

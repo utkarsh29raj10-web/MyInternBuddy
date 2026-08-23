@@ -37,13 +37,13 @@ export default function InternshipCard({job, isInitiallySaved = false}: Internsh
         try {
             const method = previousState ? "DELETE" : "POST";
             const url = previousState
-                ? `/api/internships/save?internshipId=${job.id}`
+                ? `/api/internships/save?internshipId=${job.id}&isNative=${!!job.isNative}`
                 : `/api/internships/save`;
 
             const res = await fetch(url, {
                 method,
                 headers: {"Content-Type": "application/json"},
-                body: previousState ? undefined : JSON.stringify({internshipId: job.id})
+                body: previousState ? undefined : JSON.stringify({internshipId: job.id, isNative: !!job.isNative}),
             });
 
             if (!res.ok) {

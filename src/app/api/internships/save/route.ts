@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
         }
 
         const body = await req.json();
-        const {internshipId} = body;
+        const {internshipId, isNative} = body;
 
         if (!internshipId) {
           return NextResponse.json(
@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
         const savedInternship = await prisma.savedInternship.create({
             data: {
                 userId: session.user.id,
-                internshipId: internshipId
+                nativeInternshipId: isNative ? internshipId : undefined,
+                internshipId: isNative ? undefined : internshipId
             }
         });
 
@@ -60,6 +61,7 @@ export async function DELETE(req: NextRequest) {
 
         const searchParams = req.nextUrl.searchParams;
         const internshipId = searchParams.get("internshipId");
+        const isNative = searchParams.get("isNative") === "true";
 
         if (!internshipId) {
             return NextResponse.json(
@@ -68,12 +70,13 @@ export async function DELETE(req: NextRequest) {
             );
         }
 
-        await prisma.savedInternship.delete({
+        await prisma.savedInternship.deleteMany({
             where: {
-                userId_internshipId: {
-                    userId: session.user.id,
-                    internshipId: internshipId
-                }
+                userId: session.user.id,
+                ...(isNative
+                    ? {nativeInternshipId: internshipId}
+                    : {internshipId: internshipId}
+                )
             }
         });
 
