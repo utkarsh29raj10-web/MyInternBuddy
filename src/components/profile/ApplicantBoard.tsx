@@ -34,9 +34,6 @@ export default function ApplicantBoard() {
     }, []);
 
     useEffect(() => {
-        if (!allInternships.length)
-            return;
-
         const columns = {
             "PENDING": {
                 id: "PENDING",
@@ -61,28 +58,29 @@ export default function ApplicantBoard() {
         };
         const applicantsMap: any = {};
 
-        const filteredInternships = selectedJobId === "ALL"
-            ? allInternships
-            : allInternships.filter(i => i.id === selectedJobId);
+        if (allInternships.length > 0) {
+            const filteredInternships = selectedJobId === "ALL"
+                ? allInternships
+                : allInternships.filter(i => i.id === selectedJobId);
 
-        filteredInternships.forEach((internship: any) => {
-            internship.applications.forEach((app: any) => {
-                const status = app.status || "PENDING";
-                if (columns[status as keyof typeof columns])
-                    columns[status as keyof typeof columns].applicantIds.push(app.id);
+            filteredInternships.forEach((internship: any) => {
+                internship.applications.forEach((app: any) => {
+                    const status = app.status || "PENDING";
+                    if (columns[status as keyof typeof columns])
+                        columns[status as keyof typeof columns].applicantIds.push(app.id);
 
-                applicantsMap[app.id] = {
-                    id: app.id,
-                    name: app.student.name || "Unknown Applicant",
-                    role: internship.title,
-                    date: new Date(app.appliedAt).toLocaleDateString(),
-                    coverLetter: app.coverLetter,
-                    resumeLink: app.student.resumeLink || app.student.resumeUrl,
-                    email: app.student.email
-                };
+                    applicantsMap[app.id] = {
+                        id: app.id,
+                        name: app.student.name || "Unknown Applicant",
+                        role: internship.title,
+                        date: new Date(app.appliedAt).toLocaleDateString(),
+                        coverLetter: app.coverLetter,
+                        resumeLink: app.student.resumeLink || app.student.resumeUrl,
+                        email: app.student.email
+                    };
+                });
             });
-        });
-
+        }
         setData({columns, applicants: applicantsMap, columnOrder: ["PENDING", "INTERVIEWING", "ACCEPTED", "REJECTED"]});
     }, [allInternships, selectedJobId]);
 
