@@ -77,7 +77,7 @@ export default function ProfileDropdown({ session }: ProfileDropdownProps) {
                                 </Link>
                             </>
                         ) : (
-                            <Link href="/saved"
+                            <Link href="/profile?tab=saved"
                                   onClick={() => setIsOpen(false)}
                                   className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-sm font-sans text-secondary hover:text-primary"
                             >
