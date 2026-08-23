@@ -2,78 +2,89 @@
 import {useState, useEffect} from "react";
 import {DragDropContext, Droppable, Draggable, DropResult} from "@hello-pangea/dnd";
 import {User, Briefcase, Loader2, ExternalLink} from "lucide-react";
+import {useSearchParams} from "next/navigation";
 
 // Creating mock data to test UI -> Now real
 export default function ApplicantBoard() {
+    const searchParams = useSearchParams();
+    const queryJobId = searchParams.get("jobId");
+
+    const [allInternships, setAllInternships] = useState<any[]>([]);
+    const [selectedJobId, setSelectedJobId] = useState<string>(queryJobId || "ALL");
+
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const fetchApplications = async () => {
+            try {
+                const res = await fetch("/api/applications/native");
+                const result = await res.json();
+                if (result.success)
+                    setAllInternships(result.internships);
+            }
+            catch (error) {
+                console.error(error);
+            }
+            finally {
+                setLoading(false);
+            }
+        };
         fetchApplications();
     }, []);
 
-    const fetchApplications = async () => {
-        try {
-            const res = await fetch("/api/applications/native");
-            const result = await res.json();
+    useEffect(() => {
+        if (!allInternships.length)
+            return;
 
-            if (result.success) {
-                const columns = {
-                    "PENDING": {
-                        id: "PENDING",
-                        title: "Pending Review",
-                        applicantIds: [] as string[]
-                    },
-                    "INTERVIEWING": {
-                        id: "INTERVIEWING",
-                        title: "Interviewing",
-                        applicantIds: [] as string []
-                    },
-                    "ACCEPTED": {
-                        id: "ACCEPTED",
-                        title: "Offered",
-                        applicantIds: [] as string []
-                    },
-                    "REJECTED": {
-                        id: "REJECTED",
-                        title: "Rejected",
-                        applicantIds: [] as string[]
-                    },
+        const columns = {
+            "PENDING": {
+                id: "PENDING",
+                title: "Pending Review",
+                applicantIds: [] as string[]
+            },
+            "INTERVIEWING": {
+                id: "INTERVIEWING",
+                title: "Interviewing",
+                applicantIds: [] as string[]
+            },
+            "ACCEPTED": {
+                id: "ACCEPTED",
+                title: "Offered",
+                applicantIds: [] as string[]
+            },
+            "REJECTED": {
+                id: "REJECTED",
+                title: "Rejected",
+                applicantIds: [] as string[]
+            },
+        };
+        const applicantsMap: any = {};
+
+        const filteredInternships = selectedJobId === "ALL"
+            ? allInternships
+            : allInternships.filter(i => i.id === selectedJobId);
+
+        filteredInternships.forEach((internship: any) => {
+            internship.applications.forEach((app: any) => {
+                const status = app.status || "PENDING";
+                if (columns[status as keyof typeof columns])
+                    columns[status as keyof typeof columns].applicantIds.push(app.id);
+
+                applicantsMap[app.id] = {
+                    id: app.id,
+                    name: app.student.name || "Unknown Applicant",
+                    role: internship.title,
+                    date: new Date(app.appliedAt).toLocaleDateString(),
+                    coverLetter: app.coverLetter,
+                    resumeLink: app.student.resumeLink || app.student.resumeUrl,
+                    email: app.student.email
                 };
-                const applicantsMap: any = {};
+            });
+        });
 
-                result.internships.forEach((internship: any) => {
-                    internship.applications.forEach((app: any) => {
-                        const status = app.status || "PENDING";
-                        if (columns[status as keyof typeof columns])
-                            columns[status as keyof typeof columns].applicantIds.push(app.id);
-
-                        applicantsMap[app.id] = {
-                            id: app.id,
-                            name: app.student.name || "Unknown Applicant",
-                            role: internship.title,
-                            date: new Date(app.appliedAt).toLocaleDateString(),
-                            coverLetter: app.coverLetter,
-                            resumeLink: app.student.resumeLink || app.student.resumeUrl,
-                            email: app.student.email
-                        };
-                    });
-                });
-
-                setData({
-                    columns,
-                    applicants: applicantsMap,
-                    columnOrder: ["PENDING", "INTERVIEWING", "ACCEPTED", "REJECTED"]
-                });
-            }
-        }
-        catch (error) {
-            console.error(error);
-        }
-        finally {
-            setLoading(false);
-        }
-    };
+        setData({columns, applicants: applicantsMap, columnOrder: ["PENDING", "INTERVIEWING", "ACCEPTED", "REJECTED"]});
+    }, [allInternships, selectedJobId]);
 
     const onDragEnd = async (result: DropResult) => {
         const {destination, source, draggableId} = result;
@@ -149,6 +160,21 @@ export default function ApplicantBoard() {
                         Use Drag and Drop to manage applicant status.
                     </p>
                 {/*</div>*/}
+
+                <select
+                    value={selectedJobId}
+                    onChange={(e) => setSelectedJobId(e.target.value)}
+                    className="bg-background border border-secondary/20 text-primary text-s font-bold font-sans rounded-xl px-4 py-2 outline-none focus:border-primary/50"
+                >
+                    <option value="ALL">All Listings</option>
+                    {allInternships.map(job => (
+                        <option key={job.id}
+                            value={job.id}
+                        >
+                            {job.title}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             {loading || !data ? (
