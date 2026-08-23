@@ -57,7 +57,7 @@ export default function SavedInternshipFeed() {
 
     return (
         <div className="w-full flex flex-col gap-6 animate-fade-in">
-            <h3 className="text-xl font-brand font-bold text-secondary mb-2">
+            <h3 className="text-l font-brand font-bold text-secondary mb-2">
                 Saved Internships ({internships.length})
             </h3>
 

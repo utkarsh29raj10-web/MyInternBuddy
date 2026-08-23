@@ -56,8 +56,8 @@ export default function PortfolioLinksForm() {
     }
 
     return (
-        <div className="w-full flex flex-col gap-6 animate-fade-in bg-secondary/5 border border-secondary/10 rounded-2xl p-6 md:p-8 mt-6">
-            <h3 className="text-xl font-brand font-bold text-secondary mb-2">
+        <div className="w-full flex flex-col gap-6 animate-fade-in border border-secondary/10 rounded-2xl p-6 md:p-8 mt-6">
+            <h3 className="text-l font-brand font-bold text-secondary mb-2">
                 Portfolio & Links
             </h3>
 

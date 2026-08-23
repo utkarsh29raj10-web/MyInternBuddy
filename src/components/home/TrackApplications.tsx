@@ -85,10 +85,10 @@ export default function TrackApplications({hideViewAll = false} : {hideViewAll?:
                                  className="w-full bg-background border border-secondary/10 p-4 rounded-2xl flex flex-col gap-2 hover:border-primary/30 transition-colors">
                                 <div className="flex justify-between items-start gap-2">
                                     <div className="flex flex-col">
-                                        <h4 className="font-brand font-bold text-primary text-sm line-clamp-1">
+                                        <h4 className="font-brand font-bold text-primary text-m line-clamp-1">
                                             {app.internship.title}
                                         </h4>
-                                        <p className="text-xs font-sans text-secondary/70">
+                                        <p className="text-s font-sans text-secondary/70">
                                             {app.internship.company.name}
                                         </p>
                                     </div>
