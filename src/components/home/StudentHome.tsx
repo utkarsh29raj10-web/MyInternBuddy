@@ -42,7 +42,7 @@ export default function StudentHome() {
                             <input
                                 type="text"
                                 name="location"
-                                placeholder="Location (e.g. Remote)"
+                                placeholder="Location | Default: Remote)"
                                 className="w-full h-12 pl-12 pr-4 rounded-xl bg-background/50 text-primary font-sans text-r border border-secondary/20 focus:outline-none focus:border-primary transition-colors placeholder:text-secondary/50 shadow-inner"
                             />
                             <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/50 w-5 h-5"/>

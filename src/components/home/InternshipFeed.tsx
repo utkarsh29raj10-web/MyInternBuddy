@@ -37,9 +37,8 @@ export default function InternshipFeed() {
             const data = await res.json();
 
             if (data.success && data.data) {
-                if (data.nextPageToken !== undefined) {
-                    setNextPageToken(data.nextPageToken);
-                }
+                const hasNextToken = !!data.nextPageToken;
+                setNextPageToken(data.nextPageToken || null);
 
                 if (isNewSearch) {
                     setInternships(data.data);
@@ -54,7 +53,7 @@ export default function InternshipFeed() {
                         return [...prev, ...newUniqueJobs];
                     });
 
-                    if (data.data.length < 10) setHasMore(false);
+                    setHasMore(hasNextToken);
                 }
             }
         }
@@ -119,7 +118,7 @@ export default function InternshipFeed() {
                     <MapPin className="absolute left-6 w-5 h-5 text-secondary opacity-60"/>
                     <input
                         type="text"
-                        placeholder="Location (e.g. Remote)"
+                        placeholder="Location | Default: Remote)"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                         className="w-full bg-transparent pl-14 pr-4 py-2 outline-none text-primary font-sans text-m placeholder-secondary/60"
@@ -139,13 +138,13 @@ export default function InternshipFeed() {
                         <option value="Internship" className="text-secondary bg-primary">
                             Internship
                         </option>
-                        <option value="Internship" className="text-secondary bg-primary">
+                        <option value="Apprenticeship" className="text-secondary bg-primary">
                             Apprenticeship
                         </option>
-                        <option value="Internship" className="text-secondary bg-primary">
+                        <option value="Part-Time" className="text-secondary bg-primary">
                             Part-Time
                         </option>
-                        <option value="Internship" className="text-secondary bg-primary">
+                        <option value="Full-Time" className="text-secondary bg-primary">
                             Full-Time
                         </option>
                     </select>

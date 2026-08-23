@@ -65,8 +65,8 @@ export async function fetchAndCacheGoogleJobs(query: string, location?: string, 
     const isRemote = location?.toLowerCase().includes("remote");
     const locationParam = location && !isRemote
         ? `&location=${encodeURIComponent(location)}}`
-        : '&gl=us'
-    const ltypeParam = isRemote ? "&ltype=1" : "";
+        : ''
+    const ltypeParam = (!location || isRemote) ? "&ltype=1" : "";
 
     let currentUrl: string = pageToken
         ? `${pageToken}&api_key=${apiKey}`
@@ -79,7 +79,10 @@ export async function fetchAndCacheGoogleJobs(query: string, location?: string, 
         const res = await fetch(currentUrl);
         const apiData: any = await res.json();
 
-        if (!apiData.jobs_results && apiData.jobs_results.length > 0) {
+        if (apiData.error)
+            console.error("[SERPAPI ERROR]:", apiData.error);
+
+        if (apiData.jobs_results && apiData.jobs_results.length > 0) {
             normalizedJobs = apiData.jobs_results.map((job: any) => {
                 const {stipend, duration, postedAt} = parseExtensions(job.extensions);
                 let applyLink = "#";
