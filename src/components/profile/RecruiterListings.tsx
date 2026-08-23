@@ -146,7 +146,7 @@ export default function RecruiterListings() {
             {listings.length === 0
                 ? (
                     <div className="w-full min-h-[300px] flex flex-col items-center justify-center gap-4 border border-dashed border-secondary/20 rounded-2xl bg-secondary/5">
-                        <Briefcase className="w-12 h-12 text-secondary/30"/>
+                        <Briefcase className="w-12 h-12 text-secondary opacity-60"/>
                         <p className="text-secondary/60 font-brand font-bold">
                             No Active Listings Yet.
                         </p>

@@ -156,7 +156,7 @@ export default function ApplicantBoard() {
                     {/*<h3 className="text-l font-brand font-bold text-secondary mb-1">*/}
                     {/*    Applicant Management*/}
                     {/*</h3>*/}
-                    <p className="text-sm font-sans text-secondary/60">
+                    <p className="text-sm font-sans text-secondary/80">
                         Use Drag and Drop to manage applicant status.
                     </p>
                 {/*</div>*/}
@@ -213,7 +213,7 @@ export default function ApplicantBoard() {
                                                     className="bg-background border border-primary/50 p-4 rounded-xl shadow-2xl"
                                                 >
                                                     <h5 className="font-brand font-bold text-primary flex items-center gap-2">
-                                                        <User className="w-3.5 h-3.5 text-secondary/50"/>
+                                                        <User className="w-3.5 h-3.5 text-secondary opacity-50"/>
                                                         {app.name}
                                                     </h5>
                                                     <p className="text-xs font-sans text-secondary/70 mt-2 flex items-center gap-1.5">
