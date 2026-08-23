@@ -71,7 +71,7 @@ export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuc
                 setDescription("");
                 setSkills([]);
                 setSuccess(false);
-            }, 5000);
+            }, 3000);
         }
         catch (err: any) {
             setError(err.message);
@@ -83,16 +83,16 @@ export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuc
 
     if (success) {
         return (
-            <div className="w-full flex flex-col items-center justify-center gap-4 py-16 animate-fade-in bg-secondary/5 border border-secondary/10 rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)]">
-                <h3 className="text-xl font-brand font-bold text-secondary">
-                    Internship Posted Successfully!
+            <div className="w-full flex flex-col items-center justify-center py-8 animate-fade-in border border-secondary/10 rounded-2xl p-4">
+                <h3 className="text-l font-brand font-bold text-secondary">
+                    Listing Posted Successfully!
                 </h3>
             </div>
         );
     }
 
     return (
-        <div className="w-full flex flex-col gap-6 animate-fade-in bg-secondary/5 border border-secondary/10 rounded-2xl p-6 md:p-8">
+        <div className="w-full flex flex-col gap-6 animate-fade-in border border-secondary/10 rounded-2xl p-6 md:p-8">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-l font-brand font-bold text-secondary">
                   Create a New Listing
