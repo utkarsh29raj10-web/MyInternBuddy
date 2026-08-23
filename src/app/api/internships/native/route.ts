@@ -56,7 +56,7 @@ export async function POST(req: Request) {
             );
 
         const body = await req.json();
-        const {title, location, stipend, duration, description, skills} = body;
+        const {title, location, stipend, duration, description, skills, employmentType} = body;
 
         if (!title|| !location || !description)
             return NextResponse.json(
@@ -71,6 +71,7 @@ export async function POST(req: Request) {
                 location,
                 stipend: stipend || null,
                 duration: duration || null,
+                employmentType: employmentType || "Internship",
                 description,
                 skills: skills || [],
             }
