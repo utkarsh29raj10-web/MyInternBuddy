@@ -1,4 +1,5 @@
 import InternshipFeed from "@/components/home/InternshipFeed";
+import {Suspense} from "react";
 
 export default function InternshipPage() {
     return (
@@ -14,7 +15,14 @@ export default function InternshipPage() {
                     From across the world wide web.
                 </p>
             </div>
-            <InternshipFeed/>
+
+            <Suspense fallback={
+                <div className="w-full text-center text-secondary py-10 font-sans font-bold">
+                    Loading Opportunites
+                </div>
+            }>
+                <InternshipFeed/>
+            </Suspense>
         </div>
     );
 }
