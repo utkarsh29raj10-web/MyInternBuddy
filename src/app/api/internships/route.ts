@@ -12,18 +12,27 @@ export async function GET(req: NextRequest) {
         const location = searchParams.get("location") || "";
 
         const pageToken = searchParams.get("token") || "";
+        const employmentType = searchParams.get("employmentType") || "Internship";
 
         if (!query.trim() && !location.trim()) {
             return NextResponse.json({ success: true, source: "cache", data: [] });
         }
 
-        const page = parseInt(searchParams.get("page") || "1", 10);
-        const limit = 10;
-        const skip = (page - 1) * limit;
+        if (pageToken) {
+            const fetchResult = await fetchAndCacheGoogleJobs(query, location, employmentType, pageToken);
+            return NextResponse.json({
+                success: true,
+                source: "live_pagination",
+                data: fetchResult.jobs,
+                nextPageToken: fetchResult.nextPageToken
+            });
+        }
+
         const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000);
 
         const nativeWhere: Prisma.NativeInternshipWhereInput = {
             isActive: true,
+            employmentType: employmentType,
             OR: [
                 {title: {contains: query, mode: "insensitive"}},
                 {description: {contains: query, mode: "insensitive"}},
@@ -32,73 +41,55 @@ export async function GET(req: NextRequest) {
             ...(location && {location: {contains: location, mode: "insensitive"}}),
         };
 
-        let formattedNative: any[] = [];
-        if (page === 1) {
-            const nativeJobs = await prisma.nativeInternship.findMany({
-                where: nativeWhere,
-                orderBy: {createdAt: 'desc'},
-                include: {company: true}
-            });
-
-            formattedNative = nativeJobs.map(job => ({
-                id: job.id,
-                title: job.title,
-                company: job.company?.name || "Company",
-                location: job.location,
-                stipend: job.stipend,
-                duration: job.duration,
-                applyLink: "",
-                sourcePlatform: "MyInternBuddy",
-                postedAt: job.createdAt,
-                isNative: true
-            }));
-        }
-
-        const whereCondition: Prisma.InternshipWhereInput = {
-            OR: [
-                {title: {contains: query, mode: "insensitive"}},
-                {description: {contains: query, mode: "insensitive"}},
-                {company: {contains: query, mode: "insensitive"}}
-            ],
-            ...(location && {location: {contains: location, mode: "insensitive"}}),
-            fetchedAt: {gte: threeHoursAgo}
-        };
-
-        let cachedInternships = await prisma.internship.findMany({
-            where: whereCondition,
-            orderBy: [{fetchedAt: 'asc'}, {id: 'asc'}],
-            skip: skip,
-            take: limit
+        const nativeJobs = await prisma.nativeInternship.findMany({
+            where: nativeWhere,
+            orderBy: {createdAt: 'desc'},
+            include: {company: true}
         });
 
-        const totalCachedCount = await prisma.internship.count({ where: whereCondition });
+        const formattedNative = nativeJobs.map(job => ({
+            id: job.id,
+            title: job.title,
+            company: job.company?.name || "Company",
+            location: job.location,
+            stipend: job.stipend,
+            duration: job.duration,
+            employmentType: job.employmentType,
+            applyLink: "",
+            sourcePlatform: "MyInternBuddy",
+            postedAt: job.createdAt,
+            isNative: true
+        }));
 
-        let newNextPageToken: string | null = null;
+        const fetchResult = await fetchAndCacheGoogleJobs(query, location, employmentType);
 
-        if ((page === 1 && totalCachedCount < 30) || (skip + limit > totalCachedCount)) {
-            const fetchResult = await fetchAndCacheGoogleJobs(query, location, pageToken);
-            newNextPageToken = fetchResult.nextPageToken;
+        let finalSerpJobs = fetchResult.jobs;
 
-            cachedInternships = await prisma.internship.findMany({
+        if (finalSerpJobs.length === 0) {
+            const whereCondition: Prisma.InternshipWhereInput = {
+                employmentType: employmentType,
+                OR: [
+                    {title: {contains: query, mode: "insensitive"}},
+                    {description: {contains: query, mode: "insensitive"}},
+                    {company: {contains: query, mode: "insensitive"}}
+                ],
+                ...(location && {location: {contains: location, mode: "insensitive"}}),
+                fetchedAt: {gte: threeHoursAgo}
+            };
+
+            finalSerpJobs = await prisma.internship.findMany({
                 where: whereCondition,
-                orderBy: [{fetchedAt: 'asc'}, {id: 'asc'}],
-                skip: skip,
-                take: limit
+                orderBy: [{fetchedAt: 'desc'}],
+                take: 15
             });
         }
 
-        const responsePayload: any = {
+        return NextResponse.json({
             success: true,
-            source: "cache",
-            data: [...formattedNative, ...cachedInternships]
-        };
-
-        if (newNextPageToken !== null) {
-            responsePayload.nextPageToken = newNextPageToken;
-        }
-
-        return NextResponse.json(responsePayload);
-
+            source: "cache_and_live",
+            data: [...formattedNative, ...finalSerpJobs],
+            nextPageToken: fetchResult.nextPageToken || null
+        });
     } catch (error) {
         console.error("Error in GET /api/internships:", error);
         return NextResponse.json({success: false, error: "Internal Server Error"}, {status: 500});
