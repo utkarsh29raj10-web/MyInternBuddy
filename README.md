@@ -42,9 +42,10 @@ And I hope to make this project big, into a real website for people to use.
 - Some UI stuff does not render exactly as intended in Safari (WebKit). I'm not sure why. If someone can, please tell me. It is not exactly problematic by the way
 - The opportunities feed is rather limited and doesn't actually fetch all data from across the web. I've used SerpApi. I will switch to or add more later to make it truly global.
 - I had implemented Forgot Password using reset link. I have disabled that because of free tier services confusion.
+- Hot Listings & Recently Viewed Sections are NOT built on student/explorer dashboard.
 
 # AI is used for:
-This is detailed information but the overall amount for each case is not significant. Thus, total AI usage remain well under 15-20%
+**This is detailed information but the overall amount for each case is not significant. Thus, total AI usage remain well under 15-20%**
 - Project Development Plan & Folder-File Structure
 - Setting up variables
 - Help with new version of Prisma
@@ -60,5 +61,11 @@ This is detailed information but the overall amount for each case is not signifi
 - Help with fixing infinite scroll in opportunities feed. First time -- didn't work
   - Fixed it a second time and this time got the actual code, not just help.
 - Structure for how to run locally part in this readme
+- Some help with deployment errors. There were a lot of errors, one after another and I used AI for **some** of them
 
 # Screenshots
+<img width="1399" height="744" alt="Screenshot 2026-08-24 at 1 52 40 AM" src="https://github.com/user-attachments/assets/92c51e04-3518-408f-9b66-7092f6718e32" />
+<img width="1399" height="744" alt="Screenshot 2026-08-24 at 1 53 21 AM" src="https://github.com/user-attachments/assets/2abcc94a-2cf5-47a9-9e3c-f6f80d9b9509" />
+<img width="1399" height="744" alt="Screenshot 2026-08-24 at 1 53 49 AM" src="https://github.com/user-attachments/assets/5778b931-b1bd-48df-80bc-e58c91746b75" />
+<img width="1399" height="744" alt="Screenshot 2026-08-24 at 1 53 56 AM" src="https://github.com/user-attachments/assets/bba1a481-ba1c-4c2b-9a06-bb90ac16daba" />
+<img width="1399" height="744" alt="Screenshot 2026-08-24 at 1 53 28 AM" src="https://github.com/user-attachments/assets/bebd36ea-d942-49b0-98a7-ec1c21d13c44" />
