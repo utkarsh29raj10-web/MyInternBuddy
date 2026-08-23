@@ -16,7 +16,7 @@ export default function StudentHome() {
                     </h1>
 
                     <p className="font-sans text-m text-secondary opacity-80 mb-8 max-w-lg">
-                        Explore thousands of internships aggregated from across the world.
+                        Explore thousands of opportunities aggregated from across the world.
                     </p>
                 </div>
 
@@ -46,7 +46,7 @@ export default function StudentHome() {
                         </div>
 
                         <button className="w-full h-12 mt-2 bg-primary text-background font-medium font-sans text-m rounded-xl hover:opacity-80 active:opacity-60 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
-                            Search Internships
+                            Search Opportunities
                         </button>
                     {/*change here*/}
                     </form>

@@ -43,7 +43,7 @@ export default function StudentProfile() {
                     `}
                 >
                     <Bookmark className="w-4 h-4"/>
-                    Saved Internships
+                    Saved Opportunities
                 </button>
 
                 <button

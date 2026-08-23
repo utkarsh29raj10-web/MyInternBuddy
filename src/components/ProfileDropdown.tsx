@@ -82,7 +82,7 @@ export default function ProfileDropdown({ session }: ProfileDropdownProps) {
                                   className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-sm font-sans text-secondary hover:text-primary"
                             >
                                 <Bookmark className="w-4 h-4" />
-                                Saved Internships
+                                Saved Opportunities
                             </Link>
                         )}
 

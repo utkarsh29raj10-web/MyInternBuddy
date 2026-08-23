@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
         if (!user || (user.role !== "STUDENT" && user.role !== "EXPLORER"))
             return NextResponse.json(
-                {error: "Only students can apply for internships"},
+                {error: "Only students can apply for opportunities"},
                 {status: 403}
             );
 

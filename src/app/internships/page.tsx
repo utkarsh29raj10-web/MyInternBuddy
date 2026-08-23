@@ -7,11 +7,11 @@ export default function InternshipPage() {
                 <h1 className="font-brand font-bold text-xl leading-tight mb-4 text-primary">
                     Live
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary">
-                        Internships
+                        Opportunities
                     </span>
                 </h1>
                 <p className="font-sans text-secondary text-m leading-relaxed max-w-2xl mx-auto">
-                    Search through thousands of live opportunities across the world.
+                    From across the world wide web.
                 </p>
             </div>
             <InternshipFeed/>
