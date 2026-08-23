@@ -202,15 +202,21 @@ export default function AuthModal({isOpen, onClose}: {isOpen: boolean, onClose: 
                         Continue with Email
                     </GlobalButton>
 
-                    <button type="button"
-                            onClick={() => {
-                                setIsForgotPassword(true);
-                                setErrorMsg("");
-                                setSuccessMsg("");
-                            }}
-                            className="self-end text-secondary opacity-80 hover:opacity-100 active:opacity-60 text-right text-s mt-1 transition-all cursor-pointer">
-                        Forgot Password?
-                    </button>
+                    <div className="group relative self-end mt-1">
+                        <button type="button"
+                                disabled
+                                onClick={() => {
+                                    setIsForgotPassword(true);
+                                    setErrorMsg("");
+                                    setSuccessMsg("");
+                                }}
+                                className="self-end text-secondary opacity-80 hover:opacity-100 active:opacity-60 text-right text-s mt-1 transition-all cursor-pointer">
+                            Forgot Password?
+                        </button>
+                        <span className="absolute bottom-full right-0 mb-2 w-max px-2 py-1 bg-secondary/70 text-background text-xs font-bold rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                            Coming Soon!
+                        </span>
+                    </div>
                 </form>
             ) : (
                 <form onSubmit={handleRegsitrationSubmit} className="w-full flex flex-col gap-3 font-sans animate-fade-in">

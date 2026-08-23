@@ -41,6 +41,7 @@ And I hope to make this project big, into a real website for people to use.
 # Problems
 - Some UI stuff does not render exactly as intended in Safari (WebKit). I'm not sure why. If someone can, please tell me. It is not exactly problematic by the way
 - The opportunities feed is rather limited and doesn't actually fetch all data from across the web. I've used SerpApi. I will switch to or add more later to make it truly global.
+- I had implemented Forgot Password using reset link. I have disabled that because of free tier services confusion.
 
 # AI is used for:
 This is detailed information but the overall amount for each case is not significant. Thus, total AI usage remain well under 15-20%
