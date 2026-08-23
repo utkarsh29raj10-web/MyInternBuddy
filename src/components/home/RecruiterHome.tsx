@@ -54,11 +54,11 @@ export default function RecruiterHome() {
                                 Unlock Premium Matching
                             </h2>
                             <p className="font-sans text-s text-foreground opacity-80">
-                                Need to fill roles faster? Contact our sales team to get priority listings and AI-driven candidate filters.
+                                Need to fill roles faster? Upgrade now to get priority featurings and AI-driven candidate filters.
                             </p>
                             <div className="mt-2 group relative w-max">
                                 <Link className="px-5 py-2 inline-block bg-background text-primary font-bold font-sans text-s rounded-lg hover:bg-background/90 hover:scale-105 transition-all shadow-lg"
-                                      href="/premium"
+                                      href="/subscription"
                                 >
                                     Go Premium
                                 </Link>
