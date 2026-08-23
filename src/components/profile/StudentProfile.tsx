@@ -1,12 +1,21 @@
 "use client"
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {User, Bookmark, History} from "lucide-react";
 import ProfileDetailsForm from "./ProfileDetailsForm";
 import PortfolioLinksForm from "./PortfolioLinksForm";
 import SavedInternshipFeed from "./SavedInternshipFeed";
+import {useSearchParams, useRouter, usePathname} from "next/navigation";
 
 export default function StudentProfile() {
-    const [activeTab, setActiveTab] = useState<"details" | "saved" | "history">("details");
+    const searchParams = useSearchParams();
+    const tabParam = searchParams.get("tab") as "details" | "saved" | "history" | null;
+
+    const [activeTab, setActiveTab] = useState<"details" | "saved" | "history">(tabParam || "details");
+
+    useEffect(() => {
+        if (tabParam)
+            setActiveTab(tabParam);
+    }, [tabParam]);
 
     return (
         <div className="w-full flex flex-col gap-8">
