@@ -41,6 +41,21 @@ export default function RecruiterListings() {
         }
     };
 
+    const handleToggleActive = async (job: any) => {
+        try {
+            const res = await fetch(`/api/internships/native/${job.iid}`, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({isActive: !job.isActive})
+            });
+            if (res.ok)
+                setListings(listings.map(l => l.id === job.id ? {...l, isActive: !job.isActive} : l));
+        }
+        catch (error) {
+            console.error("Something went wrong while toggling status", error);
+        }
+    };
+
     const fetchListings = async () => {
         setLoading(true);
 
@@ -171,13 +186,23 @@ export default function RecruiterListings() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col items-end gap-2">
-                                    <div className="flex items-center gap-2 text-secondary bg-secondary/5 px-4 py-2 rounded-xl font-brand font-bold text-sm">
+                                 <div className="flex flex-col items-end gap-2 shrink-0">
+                                    <button
+                                        onClick={() => window.location.href = `/profile?tab=applicants&jobId=${job.id}`}
+                                        className="flex items-center gap-2 text-secondary bg-secondary/5 hover:bg-primary/10 hover:text-primary transition-colors px-4 py-2 rounded-xl font-brand font-bold text-s"
+                                    >
                                         <Users className="w-4 h-4 text-primary"/>
                                         {job.applications?.length || 0} Applicants
-                                    </div>
+                                    </button>
 
                                     <div className="flex items-center gap-2 mt-1">
+                                        <button
+                                            onClick={() => handleToggleActive(job)}
+                                            className="px-2 py-1.5 rounded-lg text-xs font-brand font-bold text-secondary/60 hover:text-primary hover:bg-primary/10 transition-colors"
+                                        >
+                                            {job.isActive ? "Mark Inactive" : "Mark Active"}
+                                        </button>
+
                                         <button
                                             onClick={() => setEditing(job)}
                                             className="flex items-center gap-1.5 px-1.5 py-1.5 rounded-lg text-xs font-brand font-bold text-secondary/60 hover:text-primary hover:bg-primary/10 transition-colors"
