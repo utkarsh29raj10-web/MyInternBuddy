@@ -57,12 +57,14 @@ export default function RecruiterHome() {
                                 Need to fill roles faster? Contact our sales team to get priority listings and AI-driven candidate filters.
                             </p>
                             <div className="mt-2 group relative w-max">
-                                <button className="px-5 py-2 bg-background text-primary font-bold font-sans text-s rounded-lg hover:bg-background/80 transition-colors cursor-not-allowed">
-                                    Contact Sales
-                                </button>
-                                <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-background text-primary font-bold text-xs px-3 py-1.5 rounded-lg pointer-events-none whitespace-nowrap shadow-lg">
-                                    Coming Soon!
-                                </div>
+                                <Link className="px-5 py-2 inline-block bg-background text-primary font-bold font-sans text-s rounded-lg hover:bg-background/90 hover:scale-105 transition-all shadow-lg"
+                                      href="/premium"
+                                >
+                                    Go Premium
+                                </Link>
+                                {/*<div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-background text-primary font-bold text-xs px-3 py-1.5 rounded-lg pointer-events-none whitespace-nowrap shadow-lg">*/}
+                                {/*    Coming Soon!*/}
+                                {/*</div>*/}
                             </div>
                         </div>
                     </div>
