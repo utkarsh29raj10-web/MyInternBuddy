@@ -1,6 +1,19 @@
 "use client"
 import {useState} from "react";
-import {Briefcase, MapPin, Banknote, Clock, FileText, Tags, Loader2, ArrowRight, ArrowLeft, CheckCircle, X} from "lucide-react";
+import {
+    Briefcase,
+    MapPin,
+    Banknote,
+    Clock,
+    FileText,
+    Tags,
+    Loader2,
+    ArrowRight,
+    ArrowLeft,
+    CheckCircle,
+    X,
+    ChevronDown
+} from "lucide-react";
 
 export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuccess?: () => void, initialData?: any}) {
     const [step, setStep] = useState(1);
@@ -10,6 +23,7 @@ export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuc
     const [stipend, setStipend] = useState(initialData?.stipend || "");
     const [duration, setDuration] = useState(initialData?.duration || "");
     const [description, setDescription] = useState(initialData?.description || "");
+    const [employmentType, setEmploymentType] = useState(initialData?.employmentType || "Internship");
 
     const [skills, setSkills] = useState<string[]>(initialData?.skills || []);
     const [skillInput, setSkillInput] = useState("");
@@ -52,7 +66,7 @@ export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuc
             const res = await fetch(url, {
                 method: method,
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({title, location, stipend, duration, description, skills})
+                body: JSON.stringify({title, location, stipend, duration, employmentType, description, skills})
             });
 
             if (!res.ok) {
@@ -68,6 +82,7 @@ export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuc
                 setLocation("");
                 setStipend("");
                 setDuration("");
+                setEmploymentType("Internship");
                 setDescription("");
                 setSkills([]);
                 setSuccess(false);
@@ -122,6 +137,28 @@ export default function RecruiterInternshipForm({onSuccess, initialData}: {onSuc
                           className="w-full bg-background/50 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300"
                           placeholder="e.g. Marketing Intern"
                         />
+                    </div>
+
+                    <div className="flex flex-col gap-2 md:col-span-2">
+                        <label className="text-sm font-brand font-bold text-secondary/70 flex items-center gap-2">
+                            <Briefcase className="w-4 h-4"/> Employment-Type
+                        </label>
+                        <div className="relative">
+                            <select
+                                value={employmentType}
+                                onChange={(e) => setEmploymentType(e.target.value)}
+                                className="w-full bg-background/50 border border-secondary/20 rounded-xl px-4 py-3 text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 appearance-none pr-10"
+                            >
+                                <option value="Internship">Internship</option>
+                                <option value="Apprenticeship">Apprenticeship</option>
+                                <option value="Part-Time">Part-Time</option>
+                                <option value="Full-Time">Full-Time</option>
+                            </select>
+
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-50">
+                                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary opacity-50 pointer-events-none"/>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="flex flex-col gap-2">
