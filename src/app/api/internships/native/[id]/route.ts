@@ -36,7 +36,8 @@ export async function PUT(req: Request, {params}: {params: {id: string}}) {
                 stipend: body.stipend || null,
                 duration: body.duration || null,
                 description: body.description,
-                skills: body.skills || []
+                skills: body.skills || [],
+                ...(body.isActive !== undefined && {isActive: body.isActive})
             }
         });
 
