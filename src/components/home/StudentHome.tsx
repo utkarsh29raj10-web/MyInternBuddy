@@ -30,6 +30,7 @@ export default function StudentHome() {
                         <div className="relative w-full">
                             <input
                                 type="text"
+                                name="q"
                                 placeholder="Job title or keywords..."
                                 className="w-full h-12 pl-12 pr-4 rounded-xl bg-background/50 text-primary font-sans text-r border border-secondary/20 focus:outline-none focus:border-primary transition-colors placeholder:text-secondary/50 shadow-inner"
                             />
@@ -39,6 +40,7 @@ export default function StudentHome() {
                         <div className="relative w-full">
                             <input
                                 type="text"
+                                name="location"
                                 placeholder="Location (e.g. Remote)"
                                 className="w-full h-12 pl-12 pr-4 rounded-xl bg-background/50 text-primary font-sans text-r border border-secondary/20 focus:outline-none focus:border-primary transition-colors placeholder:text-secondary/50 shadow-inner"
                             />
