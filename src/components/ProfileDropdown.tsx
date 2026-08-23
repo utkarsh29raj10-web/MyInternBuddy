@@ -66,7 +66,7 @@ export default function ProfileDropdown({ session }: ProfileDropdownProps) {
                                     <Building className="w-4 h-4" />
                                     Company Settings
                                 </Link>
-                                <Link href="/billing"
+                                <Link href="/subscription"
                                       onClick={() => setIsOpen(false)}
                                       className="flex flex-1 justify-between items-center px-3 py-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-sm font-sans text-secondary hover:text-primary"
                                 >
