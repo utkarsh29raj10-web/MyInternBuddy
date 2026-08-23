@@ -59,17 +59,17 @@ export default function StudentHome() {
                 <div className="md:col-span-2 flex flex-col gap-10">
                     <section>
                         <h2 className="font-brand text-l font-bold text-primary mb-6">
-                            Hot Internships
+                            Hot Listings
                         </h2>
 
                         <div className="w-full h-80 rounded-3xl border border-secondary/10 shadow-sm glass-panel flex flex-col items-center justify-center p-6 text-center">
                             <Clock className="w-12 h-12 text-primary opacity-30 mb-4 animate-pulse"/>
                             <h3 className="font-brand text-m font-bold text-primary mb-1">
-                                Internship Feed
+                                My Feed
                             </h3>
 
                             <p className="font-sans text-s text-secondary opacity-70">
-                                Live aggregated internships will appear here.
+                                Hot Opportunities will appear here
                             </p>
                         </div>
                     </section>
@@ -85,7 +85,7 @@ export default function StudentHome() {
                                 Recently Viewed
                             </h3>
                             <p className="font-sans text-s text-secondary opacity-70">
-                                Your recently viewed internships will appear here.
+                                Your recently viewed listings will appear here.
                             </p>
                         </div>
                     </section>
