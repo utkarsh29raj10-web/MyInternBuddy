@@ -3,12 +3,14 @@
 import {useState, useEffect, useRef, useCallback} from "react";
 import InternshipCard from "./InternshipCard";
 import {useSearchParams} from "next/navigation";
-import {Search, MapPin, Loader2} from "lucide-react";
+import {Search, MapPin, Loader2, Briefcase, ChevronDown} from "lucide-react";
 
 export default function InternshipFeed() {
     const searchParams = useSearchParams();
     const [query, setQuery] = useState(searchParams.get("q") || "");
     const [location, setLocation] = useState(searchParams.get("location") || "");
+    const [employmentType, setEmploymentType] = useState(searchParams.get("employmentType") || "Internship");
+
     const [internships, setInternships] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -23,6 +25,8 @@ export default function InternshipFeed() {
             const params = new URLSearchParams();
             if (query) params.append("q", query);
             if (location) params.append("location", location);
+            if (employmentType) params.append("employmentType", employmentType);
+
             params.append("page", pageNum.toString());
 
             if (nextPageToken && !isNewSearch) {
@@ -120,6 +124,32 @@ export default function InternshipFeed() {
                         onChange={(e) => setLocation(e.target.value)}
                         className="w-full bg-transparent pl-14 pr-4 py-2 outline-none text-primary font-sans text-m placeholder-secondary/60"
                     />
+                </div>
+
+                <div className="w-px bg-secondary/20 hidden md:block my-2"/>
+
+                <div className="flex-[0.8] relative flex items-center min-w-[180px]">
+                    <Briefcase className="absolute left-6 w-5 h-5 text-secondary opacity-60 pointer-events-none"/>
+
+                    <select
+                        value={employmentType}
+                        onChange={(e) => setEmploymentType(e.target.value)}
+                        className="w-full bg-transparent pl-14 pr-10 py-2 outline-none text-primary font-sans text-m appearance-none cursor-pointer"
+                    >
+                        <option value="Internship" className="text-secondary bg-primary">
+                            Internship
+                        </option>
+                        <option value="Internship" className="text-secondary bg-primary">
+                            Apprenticeship
+                        </option>
+                        <option value="Internship" className="text-secondary bg-primary">
+                            Part-Time
+                        </option>
+                        <option value="Internship" className="text-secondary bg-primary">
+                            Full-Time
+                        </option>
+                    </select>
+                    <ChevronDown className="absolute right-4 w-4 h-4 text-secondary/60 pointer-events-none"/>
                 </div>
 
                 <button
