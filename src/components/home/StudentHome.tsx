@@ -1,5 +1,6 @@
-import {ComingSoon} from "@/components/ui/ComingSoon";
+// import {ComingSoon} from "@/components/ui/ComingSoon";
 import {Search, MapPin, Clock} from "lucide-react";
+import TrackApplications from "./TrackApplications";
 
 export default function StudentHome() {
     return (
@@ -92,20 +93,7 @@ export default function StudentHome() {
                 </div>
 
                 <div className="md:col-span-1 flex flex-col gap-10">
-                    <section>
-                        <h2 className="font-brand text-l font-bold text-primary mb-6">
-                            Pending Applications
-                        </h2>
-                        <div className="w-full h-96 rounded-3xl border border-secondary/10 shadow-sm glass-panel flex flex-col items-center justify-center p-6 text-center">
-                            <Clock className="w-10 h-10 text-primary opacity-30 mb-4 animate-pulse"/>
-                            <h3 className="font-brand text-m font-bold text-primary mb-1">
-                                Application Tracker
-                            </h3>
-                            <p className="font-sans text-s text-secondary opacity-70">
-                                Monitor your active applications here.
-                            </p>
-                        </div>
-                    </section>
+                    <TrackApplications/>
                 </div>
             </div>
         </div>
