@@ -3,9 +3,11 @@
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {Calendar, ChevronDown} from "lucide-react";
+import {useSession} from "next-auth/react";
 
 export default function OnboardingPage() {
     const router = useRouter();
+    const {update} = useSession();
     const [dob, setDob] = useState("");
     const [role, setRole] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
@@ -25,6 +27,8 @@ export default function OnboardingPage() {
                 setErrorMsg("Something went wrong while trying to save profile.");
                 return;
             }
+
+            await update();
 
             router.push("/");
             router.refresh();
@@ -76,7 +80,7 @@ export default function OnboardingPage() {
                             className={`appearance-none w-full p-3 min-h-[50px] pr-10 bg-background border border-secondary border-opacity-10 rounded-md outline-none focus:border-opacity-50 transition-colors ${!role ? "text-secondary opacity-60" : "text-primary"}`}
                         >
                             <option value="" disabled hidden>Role</option>
-                            <option value="EXPLORER">Explorer (Just browsing)</option>
+                            {/*<option value="EXPLORER">Explorer (Just browsing)</option>*/}
                             <option value="STUDENT">Student (Looking for opportunities)</option>
                             <option value="RECRUITER">Recruiter (Hiring Talent)</option>
                         </select>
@@ -84,7 +88,9 @@ export default function OnboardingPage() {
                         <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none opacity-70"/>
                     </div>
 
-                    <button type="submit" className="w-full p-3 mt-4 bg-primary text-background font-bold rounded-md hover:opacity-90 transition-opacity">
+                    <button type="submit"
+                            className="w-full p-3 mt-4 bg-primary text-background font-bold rounded-md hover:opacity-90 transition-opacity"
+                    >
                         Complete Setup
                     </button>
                 </form>
