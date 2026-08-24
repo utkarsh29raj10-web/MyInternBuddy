@@ -14,8 +14,7 @@ export default function StudentProfile() {
     const [activeTab, setActiveTab] = useState<"details" | "saved" | "history">(tabParam || "details");
 
     useEffect(() => {
-        if (tabParam)
-            setActiveTab(tabParam);
+        setActiveTab(tabParam || "details");
     }, [tabParam]);
 
     return (

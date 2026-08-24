@@ -13,8 +13,7 @@ export default function RecruiterProfile() {
     const [activeTab, setActiveTab] = useState<"company" | "listings" | "applicants">(tabParam|| "company");
 
     useEffect(() => {
-        if (tabParam)
-            setActiveTab(tabParam);
+        setActiveTab(tabParam || "company");
     }, [tabParam]);
 
     const router = useRouter();
