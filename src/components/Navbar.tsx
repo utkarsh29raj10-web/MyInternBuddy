@@ -1,16 +1,25 @@
 "use client";
 
+import {useEffect, useRef} from "react";
 import {useSession, signOut} from "next-auth/react";
 import Link from "next/link";
 import {SITE_CONFIG} from "@/constants/config";
 import LoginButton from "@/components/LoginButton";
 import ThemeToggle from "@/components/ThemeToggle";
-import {LogOut, User, Briefcase, LayoutDashboard, Search} from "lucide-react";
+import {User, Briefcase, LayoutDashboard, Search} from "lucide-react";
 import ProfileDropdown from "@/components/ProfileDropdown";
 
 export default function Navbar() {
     const {data: session, status} = useSession();
     const userRole = session?.user?.role;
+    const wasAuthenticated = useRef(false);
+
+    useEffect(() => {
+        if (status === "authenticated")
+            wasAuthenticated.current = true;
+        else if (status === "unauthenticated" && wasAuthenticated.current)
+            window.location.reload();
+    }, [status]);
 
     return (
         <div className="fixed top-6 w-full flex justify-center z-40 pointer-events-none">
