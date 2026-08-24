@@ -20,11 +20,31 @@ export async function GET() {
 
         const savedRecords = await prisma.savedInternship.findMany({
             where: {userId: userId},
-            include: {internship: true},
+            include: {
+                internship: true,
+                nativeInternship: {include: {company: true}}
+            },
             orderBy: {savedAt: 'desc'}
         });
 
-        const savedInternships = savedRecords.map(record => record.internship);
+        const savedInternships = savedRecords.map(record => {
+            if(record.nativeInternship)
+                // Reformatting this so that internshipcard component can work properly with this
+                return {
+                    id: record.nativeInternship.id,
+                    title: record.nativeInternship.title,
+                    company: record.nativeInternship.company?.name || "Company",
+                    location: record.nativeInternship.location,
+                    stipend: record.nativeInternship.stipend,
+                    duration: record.nativeInternship.duration,
+                    employmentType: record.nativeInternship.employmentType,
+                    applyLink: "",
+                    sourcePlatform: "MyInternBuddy",
+                    postedAt: record.nativeInternship.createdAt,
+                    isNative: true
+                };
+            return record.internship;
+        }).filter(Boolean);
 
         return NextResponse.json(savedInternships);
     }

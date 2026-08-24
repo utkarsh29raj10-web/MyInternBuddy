@@ -104,14 +104,15 @@ model Internship {
 model SavedInternship {
   id                 String            @id @default(cuid())
   userId             String
-  internshipId       String
+  internshipId       String?
   savedAt            DateTime          @default(now())
   user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  internship         Internship        @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+  internship         Internship?       @relation(fields: [internshipId], references: [id], onDelete: Cascade)
   nativeInternshipId String?
   nativeInternship   NativeInternship? @relation(fields: [nativeInternshipId], references: [id], onDelete: Cascade)
 
   @@unique([userId, internshipId])
+  @@unique([userId, nativeInternshipId])
 }
 
 model Company {
