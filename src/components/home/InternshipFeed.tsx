@@ -187,7 +187,7 @@ export default function InternshipFeed() {
 
             {!loading && internships.length === 0 && (
                 <p className="text-secondary opacity-60 font-sans font-bold py-8 text-center max-w-md">
-                    No internships . Please try again with different keywords or location.
+                    No Opportunities Found. Please try again with different keywords or location.
                 </p>
             )}
         </div>

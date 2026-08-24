@@ -36,7 +36,7 @@ export default function SavedInternshipFeed() {
     if (error) {
         return (
             <div className="w-full min-h-[400px] flex items-center justify-center text-red-400 font-brand font-bold">
-                Failed to load saved internships. Try again later.
+                Failed to load saved opportunities. Try again later.
             </div>
         );
     }
@@ -46,10 +46,10 @@ export default function SavedInternshipFeed() {
             <div className="w-full min-h-[400px] flex flex-col items-center justify-center gap-4 animate-fade-in opacity-80">
                 <BookmarkX className="w-16 h-16 text-secondary opacity-60"/>
                 <h3 className="text-l font-brand font-bold text-secondary">
-                    No Saved Internships Found
+                    Hmm.. Still Lazy?
                 </h3>
                 <p className="text-sm font-sans text-secondary/60 text-center max-w-sm">
-                    You haven't bookmarked any internships yet. Start exploring right now by heading to Find Internships page.
+                    It looks like you have no saved opportunities yet. Hurry before your time runs out!
                 </p>
             </div>
         );
@@ -58,7 +58,7 @@ export default function SavedInternshipFeed() {
     return (
         <div className="w-full flex flex-col gap-6 animate-fade-in">
             <h3 className="text-l font-brand font-bold text-secondary mb-2">
-                Saved Internships ({internships.length})
+                Saved Opportunities ({internships.length})
             </h3>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
