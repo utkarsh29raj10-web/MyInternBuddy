@@ -1,5 +1,5 @@
 // import {ComingSoon} from "@/components/ui/ComingSoon";
-import {Search, MapPin, Clock} from "lucide-react";
+import {Search, MapPin, Clock, Briefcase} from "lucide-react";
 import TrackApplications from "./TrackApplications";
 
 export default function StudentHome() {
@@ -46,6 +46,28 @@ export default function StudentHome() {
                                 className="w-full h-12 pl-12 pr-4 rounded-xl bg-background/50 text-primary font-sans text-r border border-secondary/20 focus:outline-none focus:border-primary transition-colors placeholder:text-secondary/50 shadow-inner"
                             />
                             <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/50 w-5 h-5"/>
+                        </div>
+
+                        <div className="relative w-full">
+                            <select
+                                name="employmentType"
+                                defaultValue="Internship"
+                                className="w-full h-12 pl-12 pr-4 rounded-xl bg-background/50 text-primary font-sans text-r border border-secondary/20 focus:outline-none focus:border-primary transition-colors appearance-none cursor-pointer shadow-inner"
+                            >
+                                <option value="Internship" className="text-secondary bg-primary">
+                                    Internship
+                                </option>
+                                <option value="Apprenticeship" className="text-secondary bg-primary">
+                                    Apprenticeship
+                                </option>
+                                <option value="Part-time" className="text-secondary bg-primary">
+                                    Part-Time
+                                </option>
+                                <option value="Full-time" className="text-secondary bg-primary">
+                                    Full-Time
+                                </option>
+                            </select>
+                            <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/50 w-5 h-5"/>
                         </div>
 
                         <button className="w-full h-12 mt-2 bg-primary text-background font-medium font-sans text-m rounded-xl hover:opacity-80 active:opacity-60 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
