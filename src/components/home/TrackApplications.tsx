@@ -60,16 +60,21 @@ export default function TrackApplications({hideViewAll = false} : {hideViewAll?:
 
     return (
         <section className="flex flex-col h-full animate-fade-in w-full">
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="font-brand text-l font-bold text-primary">
-                    Track Native Applications
-                </h2>
-                {!hideViewAll && (
-                    <Link href="/profile?tab=history"
-                          className="text-secondary opacity-60 hover:opacity-100 font-sans text-sm font-bold transition-opacity">
-                        View All &rarr;
-                    </Link>
-                )}
+            <div className="mb-1 flex flex-col">
+                <div className="flex items-center justify-between">
+                    <h2 className="font-brand text-l font-bold text-primary leading-none mb-1">
+                        Track Applications
+                    </h2>
+                    {!hideViewAll && (
+                        <Link href="/profile?tab=history"
+                              className="text-secondary opacity-60 hover:opacity-100 font-sans text-sm font-bold transition-opacity">
+                            View All &rarr;
+                        </Link>
+                    )}
+                </div>
+                <span className="font-brand font-semibold text-s text-secondary/70 mb-2">
+                    Only For Native Applications
+                </span>
             </div>
 
             <div className="w-full h-96 overflow-y-auto rounded-3xl border border-secondary/10 shadow-sm glass-panel p-4 flex flex-col gap-3">
