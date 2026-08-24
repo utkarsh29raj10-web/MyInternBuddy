@@ -99,9 +99,9 @@ export default function InternshipFeed() {
         <div className="w-full flex flex-col items-center gap-12 animate-fade-in pb-24">
             <form
                 onSubmit={handleSearch}
-                className="w-full max-w-4xl bg-background/80 backdrop-blur-md border border-secondary/20 p-1 rounded-full flex flex-col md:flex-row gap-2 sticky top-24 z-30 shadow-xl"
+                className="w-full max-w-5xl bg-background/80 backdrop-blur-md border border-secondary/20 p-1 rounded-full flex flex-col md:flex-row gap-2 sticky top-24 z-30 shadow-xl"
             >
-                <div className="flex-1 relative flex items-center">
+                <div className="flex-[0.8] relative flex items-center">
                     <Search className="absolute left-6 w-5 h-5 text-secondary opacity-60"/>
                     <input
                         type="text"
@@ -114,7 +114,8 @@ export default function InternshipFeed() {
 
                 <div className="w-px bg-secondary/20 hidden md:block my-2"/>
 
-                <div className="flex-1 relative flex items-center">
+
+                <div className="flex-[0.8] relative flex items-center">
                     <MapPin className="absolute left-6 w-5 h-5 text-secondary opacity-60"/>
                     <input
                         type="text"
@@ -127,9 +128,8 @@ export default function InternshipFeed() {
 
                 <div className="w-px bg-secondary/20 hidden md:block my-2"/>
 
-                <div className="flex-[0.8] relative flex items-center min-w-[180px]">
+                <div className="flex-[0.8] relative flex items-center">
                     <Briefcase className="absolute left-6 w-5 h-5 text-secondary opacity-60 pointer-events-none"/>
-
                     <select
                         value={employmentType}
                         onChange={(e) => setEmploymentType(e.target.value)}
