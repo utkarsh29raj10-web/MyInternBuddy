@@ -62,7 +62,7 @@ export default function TrackApplications({hideViewAll = false} : {hideViewAll?:
         <section className="flex flex-col h-full animate-fade-in w-full">
             <div className="flex items-center justify-between mb-6">
                 <h2 className="font-brand text-l font-bold text-primary">
-                    Track Applications
+                    Track Native Applications
                 </h2>
                 {!hideViewAll && (
                     <Link href="/profile?tab=history"
@@ -82,7 +82,7 @@ export default function TrackApplications({hideViewAll = false} : {hideViewAll?:
                         const {icon: StatusIcon, color, bg, label} = getStatusConfig(app.status);
                         return (
                             <div key={app.id}
-                                 className="w-full bg-background border border-secondary/10 p-4 rounded-2xl flex flex-col gap-2 hover:border-primary/30 transition-colors">
+                                 className="w-full border border-secondary/10 p-4 rounded-2xl flex flex-col gap-2 hover:border-primary/30 transition-colors">
                                 <div className="flex justify-between items-start gap-2">
                                     <div className="flex flex-col">
                                         <h4 className="font-brand font-bold text-primary text-m line-clamp-1">
@@ -112,10 +112,10 @@ export default function TrackApplications({hideViewAll = false} : {hideViewAll?:
                 ) : (
                     <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
                         <FileText className="w-10 h-10 text-primary opacity-30 mb-4"/>
-                        <h3 className="font-brand text-s font-bold text-primary mb-1">
+                        <h3 className="font-brand text-m font-bold text-primary mb-1">
                             No applications
                         </h3>
-                        <p className="font-sans text-xs text-secondary opacity-80">
+                        <p className="font-sans text-s text-secondary opacity-80">
                             When you apply for native jobs, their statuses will track here.
                         </p>
                     </div>
