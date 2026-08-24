@@ -118,7 +118,7 @@ export default function InternshipFeed() {
                     <MapPin className="absolute left-6 w-5 h-5 text-secondary opacity-60"/>
                     <input
                         type="text"
-                        placeholder="Location | Default: Remote)"
+                        placeholder="Location | Default: Remote"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                         className="w-full bg-transparent pl-14 pr-4 py-2 outline-none text-primary font-sans text-m placeholder-secondary/60"
