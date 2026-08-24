@@ -99,7 +99,7 @@ export default function InternshipFeed() {
         <div className="w-full flex flex-col items-center gap-12 animate-fade-in pb-24">
             <form
                 onSubmit={handleSearch}
-                className="w-full max-w-5xl bg-background/80 backdrop-blur-md border border-secondary/20 p-1 rounded-full flex flex-col md:flex-row gap-2 sticky top-24 z-30 shadow-xl"
+                className="w-full max-w-5xl bg-background/80 backdrop-blur-md border border-secondary/20 p-4 md:p-1 rounded-3xl md:rounded-full flex flex-col md:flex-row gap-4 md:gap-2 sticky top-24 z-30 shadow-xl"
             >
                 <div className="flex-[0.8] relative flex items-center">
                     <Search className="absolute left-6 w-5 h-5 text-secondary opacity-60"/>
