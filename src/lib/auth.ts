@@ -63,8 +63,10 @@ export const authOptions: NextAuthOptions = {
 
             if (token.email) {
                 const dbUser = await prisma.user.findUnique({where: {email: token.email}});
-                if (dbUser)
+                if (dbUser) {
                     token.role = dbUser.role;
+                    token.onboarded = !!dbUser.dateofBirth;
+                }
             }
             return token;
         },
@@ -74,6 +76,8 @@ export const authOptions: NextAuthOptions = {
                 session.user.id = token.id
                 // @ts-ignore
                 session.user.role = token.role;
+                // @ts-ignore
+                session.user.onboarded = token.onboarded;
             }
             return session;
         }
