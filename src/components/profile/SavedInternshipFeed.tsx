@@ -44,8 +44,8 @@ export default function SavedInternshipFeed() {
     if (internships.length === 0) {
         return (
             <div className="w-full min-h-[400px] flex flex-col items-center justify-center gap-4 animate-fade-in opacity-80">
-                <BookmarkX className="w-16 h-16 text-secondary/60"/>
-                <h3 className="text-xl font-brand font-bold text-secondary">
+                <BookmarkX className="w-16 h-16 text-secondary opacity-60"/>
+                <h3 className="text-l font-brand font-bold text-secondary">
                     No Saved Internships Found
                 </h3>
                 <p className="text-sm font-sans text-secondary/60 text-center max-w-sm">
